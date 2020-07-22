@@ -12,6 +12,9 @@ import java.util.*
 
 @Service
 class AuthorServiceImpl(@Autowired val authorRepository: AuthorRepository) : AuthorService {
+    override fun findAllAuthors(): List<Author> {
+        return authorRepository.findAll().toList()
+    }
 
     override fun findAllAuthors(pageable: Pageable): Page<Author> {
         return authorRepository.findAll(pageable)
@@ -23,6 +26,10 @@ class AuthorServiceImpl(@Autowired val authorRepository: AuthorRepository) : Aut
 
     override fun findAuthorsByBooks(book: Book): List<Author> {
         return authorRepository.findAuthorsByBooks(book)
+    }
+
+    override fun searchAuthors(param: String, pageable: Pageable): Page<Author> {
+        return authorRepository.findAuthorsByFirstNameContainingOrMiddleNameContainingOrLastNameContainingOrDescriptionContaining(param, param, param, param, pageable)
     }
 
     override fun existsAuthorByFirstNameAndLastNameAndDateOfBirth(firstName: String, lastName: String, dateOfBirth: Date): Boolean {

@@ -56,7 +56,7 @@ class CityRestController(@Autowired val cityService: CityService) {
 
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun saveCity(@RequestBody city: City): ResponseEntity<Any> {
-        return when (cityService.existsCtyByCityNameOrPostalCode(city.cityName, city.postalCode)) {
+        return when (cityService.existsCtyByCityNameOrPostalCode(city.cityName, city.postalCode) || cityService.findCityByCityId(city.cityId).isPresent) {
             false -> {
                 cityService.saveCity(city)
                 ResponseEntity(HttpStatus.OK)

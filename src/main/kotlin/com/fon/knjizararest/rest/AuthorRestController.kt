@@ -2,7 +2,6 @@ package com.fon.knjizararest.rest
 
 import com.fon.knjizararest.entity.Author
 import com.fon.knjizararest.service.AuthorService
-import org.apache.coyote.Response
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -11,20 +10,33 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.util.*
 
 @RestController
 @RequestMapping("/api/v0/authors")
 class AuthorRestController(@Autowired val authorService: AuthorService) {
+
+    @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun findAllAuthorsNoPaging(): ResponseEntity<List<Author>> {
+        val authors = authorService.findAllAuthors()
+        return when (authors.isNotEmpty()) {
+            true -> ResponseEntity(authors, HttpStatus.OK)
+            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+        }
+    }
 
     @GetMapping("/{page}/{size}/{sort}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findAllAuthors(@PathVariable page: Int, @PathVariable size: Int, @PathVariable sort: String): ResponseEntity<Page<Author>> {
         return ResponseEntity(authorService.findAllAuthors(PageRequest.of(page, size, Sort.by(sort))), HttpStatus.OK)
     }
 
+    @GetMapping("/{page}/{size}/{sort}/{param}", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun findAllAuthorsSearch(@PathVariable page: Int, @PathVariable size: Int, @PathVariable sort: String, @PathVariable param: String): ResponseEntity<Page<Author>> {
+        return ResponseEntity(authorService.searchAuthors(param, PageRequest.of(page, size, Sort.by(sort))), HttpStatus.OK)
+    }
+
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun saveAuthor(@RequestBody author: Author): ResponseEntity<Any> {
-        return when (authorService.existsAuthorByFirstNameAndLastNameAndDateOfBirth(author.firstName, author.lastName, author.dateOfBirth)) {
+        return when (authorService.existsAuthorByFirstNameAndLastNameAndDateOfBirth(author.firstName, author.lastName, author.dateOfBirth) || authorService.findAuthorByAuthorId(author.authorId).isPresent) {
             false -> {
                 authorService.saveAuthor(author)
                 ResponseEntity(HttpStatus.OK)

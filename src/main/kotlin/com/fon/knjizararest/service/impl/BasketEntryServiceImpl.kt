@@ -19,9 +19,10 @@ class BasketEntryServiceImpl(@Autowired val basketEntryRepository: BasketEntryRe
         return basketEntryRepository.findById(entryId)
     }
 
-    override fun findBasketEntriesByBasketBasketId(basketId: Long, pageable: Pageable): Page<BasketEntry> {
-        return basketEntryRepository.findBasketEntriesByBasketBasketId(basketId, pageable)
+    override fun findBasketEntriesByBasketBasketIdAndActiveEquals(basketId: Long, active: Boolean, pageable: Pageable): Page<BasketEntry> {
+        return basketEntryRepository.findBasketEntriesByBasketBasketIdAndActiveEquals(basketId, active, pageable)
     }
+
 
     override fun deleteBasketEntryByEntryId(entryId: Long) {
         basketEntryRepository.deleteBasketEntryByEntryId(entryId)

@@ -1,5 +1,6 @@
 package com.fon.knjizararest.entity
 
+import java.util.*
 import javax.persistence.*
 
 @Entity
@@ -13,5 +14,6 @@ data class User(
         @Column(name = "email", nullable = false) val email: String,
         @Column(name = "phone", nullable = false) val phone: String,
         @Column(name = "address", nullable = false) val address: String,
+        @Column(name = "date_of_birth", nullable = false) val dateOfBirth: Date,
         @ManyToOne @JoinColumn(name = "city_id", nullable = false) val city: City
 )

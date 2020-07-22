@@ -32,7 +32,7 @@ class CountryRestController(@Autowired val countryService: CountryService) {
 
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun saveCountry(@RequestBody country: Country): ResponseEntity<Any> {
-        return when (countryService.existsCountryByCountryNameOrCountryNameShort(country.countryName, country.countryNameShort)) {
+        return when (countryService.existsCountryByCountryNameOrCountryNameShort(country.countryName, country.countryNameShort) || countryService.findCountryByCountryId(country.countryId).isPresent) {
             false -> {
                 countryService.saveCountry(country)
                 ResponseEntity(HttpStatus.OK)

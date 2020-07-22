@@ -21,4 +21,8 @@ class UserServiceImpl(@Autowired val userRepository: UserRepository) : UserServi
         userRepository.save(user)
     }
 
+    override fun findUserByUserId(userId: Long): Optional<User> {
+        return userRepository.findById(userId)
+    }
+
 }

@@ -8,6 +8,6 @@ import java.util.*
 interface BasketEntryService {
     fun saveBasketEntry(basketEntry: BasketEntry) // default method
     fun findBasketEntryByEntryId(entryId: Long): Optional<BasketEntry>
-    fun findBasketEntriesByBasketBasketId(basketId: Long, pageable: Pageable): Page<BasketEntry>
+    fun findBasketEntriesByBasketBasketIdAndActiveEquals(basketId: Long, active: Boolean, pageable: Pageable): Page<BasketEntry>
     fun deleteBasketEntryByEntryId(entryId: Long)
 }

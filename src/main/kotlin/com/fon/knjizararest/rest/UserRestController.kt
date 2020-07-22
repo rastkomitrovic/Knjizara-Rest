@@ -1,8 +1,7 @@
 package com.fon.knjizararest.rest
 
 import com.fon.knjizararest.entity.User
-import com.fon.knjizararest.repository.UserRepository
-import org.apache.coyote.Response
+import com.fon.knjizararest.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -11,11 +10,11 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/v0/users")
-class UserRestController(@Autowired val userRepository: UserRepository) {
+class UserRestController(@Autowired val userService: UserService) {
 
     @GetMapping("/{username}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findUserByUsername(@PathVariable username: String): ResponseEntity<User> {
-        val user = userRepository.findUserByUsername(username)
+        val user = userService.findUserByUsername(username)
         return when (user.isPresent) {
             true -> ResponseEntity(user.get(), HttpStatus.OK)
             else -> ResponseEntity(HttpStatus.NOT_FOUND)
@@ -24,9 +23,9 @@ class UserRestController(@Autowired val userRepository: UserRepository) {
 
     @DeleteMapping("/{username}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun deleteUserByUsername(@PathVariable username: String): ResponseEntity<Any> {
-        return when (userRepository.findUserByUsername(username).isPresent) {
+        return when (userService.findUserByUsername(username).isPresent) {
             true -> {
-                userRepository.deleteUserByUsername(username)
+                userService.deleteUserByUsername(username)
                 ResponseEntity(HttpStatus.OK)
             }
             else -> ResponseEntity(HttpStatus.NOT_FOUND)
@@ -35,9 +34,9 @@ class UserRestController(@Autowired val userRepository: UserRepository) {
 
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun saveUser(@RequestBody user: User): ResponseEntity<Any> {
-        return when (userRepository.findUserByUsername(user.username).isPresent) {
+        return when (userService.findUserByUsername(user.username).isPresent || userService.findUserByUserId(user.userId).isPresent) {
             false -> {
-                userRepository.save(user)
+                userService.saveUser(user)
                 ResponseEntity(HttpStatus.OK)
             }
             else -> ResponseEntity(HttpStatus.FOUND)
@@ -46,9 +45,9 @@ class UserRestController(@Autowired val userRepository: UserRepository) {
 
     @PutMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun updateUser(@RequestBody user: User): ResponseEntity<Any> {
-        return when (userRepository.findUserByUsername(user.username).isPresent) {
+        return when (userService.findUserByUsername(user.username).isPresent) {
             true -> {
-                userRepository.save(user)
+                userService.saveUser(user)
                 ResponseEntity(HttpStatus.OK)
             }
             else -> ResponseEntity(HttpStatus.NOT_FOUND)

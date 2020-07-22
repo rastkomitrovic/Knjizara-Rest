@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/v0/basketEntries")
 class BasketEntryRestController(@Autowired val basketEntryService: BasketEntryService) {
 
-    @GetMapping("/{basketId}/{page}/{size}/{sort}", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun findBasketEntriesByBasketBasketId(@PathVariable basketId: Long, @PathVariable page: Int, @PathVariable size: Int, @PathVariable sort: String): ResponseEntity<Page<BasketEntry>> {
-        return ResponseEntity(basketEntryService.findBasketEntriesByBasketBasketId(basketId, PageRequest.of(page, size, Sort.by(sort))), HttpStatus.OK)
+    @GetMapping("/{basketId}/{page}/{size}/{sort}/{active}", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun findBasketEntriesByBasketBasketId(@PathVariable basketId: Long, @PathVariable page: Int, @PathVariable size: Int, @PathVariable sort: String, @PathVariable active: Boolean): ResponseEntity<Page<BasketEntry>> {
+        return ResponseEntity(basketEntryService.findBasketEntriesByBasketBasketIdAndActiveEquals(basketId, active, PageRequest.of(page, size, Sort.by(sort))), HttpStatus.OK)
     }
 
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])

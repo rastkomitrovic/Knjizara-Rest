@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository
 import java.util.*
 
 @Repository
-interface BasketRepository :CrudRepository<Basket,Long>{
+interface BasketRepository : CrudRepository<Basket, Long> {
     fun findBasketByUserUsername(username: String): Optional<Basket>
     fun deleteBasketByBasketId(basketId: Long)
 }
