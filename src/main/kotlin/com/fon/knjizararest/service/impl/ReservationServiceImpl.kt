@@ -34,4 +34,8 @@ class ReservationServiceImpl(@Autowired val reservationRepository: ReservationRe
     override fun existsByEntryEntryId(entryId: Long): Boolean {
         return reservationRepository.existsByEntryEntryId(entryId)
     }
+
+    override fun findReservationByEntryEntryId(entryId: Long): Optional<Reservation> {
+        return reservationRepository.findReservationByEntryEntryId(entryId)
+    }
 }

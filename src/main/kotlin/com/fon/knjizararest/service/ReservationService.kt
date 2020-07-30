@@ -12,4 +12,5 @@ interface ReservationService {
     fun findReservationsByStatus(status: String, pageable: Pageable): Page<Reservation>
     fun deleteReservationByReservationId(reservationId: Long)
     fun existsByEntryEntryId(entryId: Long): Boolean
+    fun findReservationByEntryEntryId(entryId: Long): Optional<Reservation>
 }

@@ -2,6 +2,7 @@ package com.fon.knjizararest.rest
 
 import com.fon.knjizararest.entity.Reservation
 import com.fon.knjizararest.service.ReservationService
+import org.apache.coyote.Response
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -24,13 +25,22 @@ class ReservationRestController(@Autowired val reservationService: ReservationSe
         }
     }
 
+    @GetMapping("/entry/{entryId}", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun findReservationByEntryId(@PathVariable entryId: Long): ResponseEntity<Reservation> {
+        val reservation = reservationService.findReservationByEntryEntryId(entryId)
+        return when (reservation.isPresent) {
+            true -> ResponseEntity(reservation.get(), HttpStatus.OK)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
+        }
+    }
+
     @GetMapping("/{page}/{size}/{sort}/{status}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findReservationsStatusSearch(@PathVariable page: Int, @PathVariable size: Int, @PathVariable sort: String, @PathVariable status: String): ResponseEntity<Page<Reservation>> {
         return ResponseEntity(reservationService.findReservationsByStatus(status, PageRequest.of(page, size, Sort.by(sort))), HttpStatus.OK)
     }
 
     @GetMapping("/{page}/{size}/{sort}", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun findReservations(@PathVariable page: Int, @PathVariable size: Int, @PathVariable sort: String, @PathVariable status: String): ResponseEntity<Page<Reservation>> {
+    fun findReservations(@PathVariable page: Int, @PathVariable size: Int, @PathVariable sort: String): ResponseEntity<Page<Reservation>> {
         return ResponseEntity(reservationService.findReservations(PageRequest.of(page, size, Sort.by(sort))), HttpStatus.OK)
     }
 

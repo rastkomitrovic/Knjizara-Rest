@@ -18,7 +18,7 @@ class CityServiceImpl(@Autowired val cityRepository: CityRepository) : CityServi
     }
 
     override fun findAllByCityIdNotNull(): List<City> {
-        return cityRepository.findAllByCityIdNotNull()
+        return cityRepository.findAll().toList()
     }
 
     override fun deleteCityByCityId(cityId: Long) {
