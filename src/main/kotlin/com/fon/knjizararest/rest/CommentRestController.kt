@@ -17,7 +17,7 @@ class CommentRestController(@Autowired val commentService: CommentService) {
         val comments = commentService.findCommentsByBookBookId(bookId)
         return when (comments.isNotEmpty()) {
             true -> ResponseEntity(comments, HttpStatus.OK)
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 
@@ -39,7 +39,7 @@ class CommentRestController(@Autowired val commentService: CommentService) {
                 commentService.saveComment(comment)
                 ResponseEntity(HttpStatus.OK)
             }
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 
@@ -50,7 +50,7 @@ class CommentRestController(@Autowired val commentService: CommentService) {
                 commentService.deleteCommentByCommentId(commentId)
                 ResponseEntity(HttpStatus.OK)
             }
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 

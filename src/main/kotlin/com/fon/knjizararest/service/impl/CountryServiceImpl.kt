@@ -18,7 +18,7 @@ class CountryServiceImpl(@Autowired val countryRepository: CountryRepository) : 
     }
 
     override fun deleteCountryByCountryId(countryId: Long) {
-        countryRepository.deleteCountryByCountryId(countryId)
+        countryRepository.deleteById(countryId)
     }
 
     override fun findCountriesByCountryIdNotNull(): List<Country> {

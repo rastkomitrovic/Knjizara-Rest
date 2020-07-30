@@ -17,7 +17,7 @@ class BasketRestController(@Autowired val basketService: BasketService) {
         val basket = basketService.findBasketByBasketId(basketId)
         return when (basket.isPresent) {
             true -> ResponseEntity(basket.get(), HttpStatus.OK)
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 
@@ -39,7 +39,7 @@ class BasketRestController(@Autowired val basketService: BasketService) {
                 basketService.saveBasket(basket)
                 ResponseEntity(HttpStatus.OK)
             }
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 
@@ -50,7 +50,7 @@ class BasketRestController(@Autowired val basketService: BasketService) {
                 basketService.deleteBasketByBasketId(basketId)
                 ResponseEntity(HttpStatus.OK)
             }
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 

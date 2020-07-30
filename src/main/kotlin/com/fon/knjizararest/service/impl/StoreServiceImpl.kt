@@ -36,6 +36,6 @@ class StoreServiceImpl(@Autowired val storeRepository: StoreRepository) : StoreS
     }
 
     override fun deleteStoreByStoreId(storeId: Long) {
-        storeRepository.deleteStoreByStoreId(storeId)
+        storeRepository.deleteById(storeId)
     }
 }

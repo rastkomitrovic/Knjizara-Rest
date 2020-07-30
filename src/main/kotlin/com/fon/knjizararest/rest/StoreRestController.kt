@@ -20,7 +20,7 @@ class StoreRestController(@Autowired val storeService: StoreService) {
         val stores = storeService.findAllStores();
         return when (stores.isNotEmpty()) {
             true -> ResponseEntity(stores, HttpStatus.OK)
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 
@@ -39,7 +39,7 @@ class StoreRestController(@Autowired val storeService: StoreService) {
         val store = storeService.findStoreByStoreId(storeId)
         return when (store.isPresent) {
             true -> ResponseEntity(store.get(), HttpStatus.OK)
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 
@@ -61,7 +61,7 @@ class StoreRestController(@Autowired val storeService: StoreService) {
                 storeService.saveStore(store)
                 ResponseEntity(HttpStatus.OK)
             }
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 
@@ -72,7 +72,7 @@ class StoreRestController(@Autowired val storeService: StoreService) {
                 storeService.deleteStoreByStoreId(storeId)
                 ResponseEntity(HttpStatus.OK)
             }
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 }

@@ -21,7 +21,7 @@ class BookRestController(@Autowired val bookService: BookService) {
         val books = bookService.findAllBooks()
         return when (books.isNotEmpty()) {
             true -> ResponseEntity(books, HttpStatus.OK)
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 
@@ -30,7 +30,7 @@ class BookRestController(@Autowired val bookService: BookService) {
         val book = bookService.findBookByBookId(bookId)
         return when (book.isPresent) {
             true -> ResponseEntity(book.get(), HttpStatus.OK)
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 
@@ -67,7 +67,7 @@ class BookRestController(@Autowired val bookService: BookService) {
                 bookService.saveBook(book)
                 ResponseEntity(HttpStatus.OK)
             }
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 
@@ -78,7 +78,7 @@ class BookRestController(@Autowired val bookService: BookService) {
                 bookService.deleteBookByBookId(bookId)
                 ResponseEntity(HttpStatus.OK)
             }
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 }

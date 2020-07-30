@@ -20,7 +20,7 @@ class ReservationRestController(@Autowired val reservationService: ReservationSe
         val reservation = reservationService.findReservationByReservationId(reservationId)
         return when (reservation.isPresent) {
             true -> ResponseEntity(reservation.get(), HttpStatus.OK)
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 
@@ -53,7 +53,7 @@ class ReservationRestController(@Autowired val reservationService: ReservationSe
                 ResponseEntity(HttpStatus.OK)
             }
             else -> {
-                ResponseEntity(HttpStatus.NOT_FOUND)
+                ResponseEntity(HttpStatus.NO_CONTENT)
             }
         }
     }

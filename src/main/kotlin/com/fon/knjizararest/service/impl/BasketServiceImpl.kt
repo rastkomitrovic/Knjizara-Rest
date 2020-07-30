@@ -22,7 +22,7 @@ class BasketServiceImpl(@Autowired val basketRepository: BasketRepository) : Bas
     }
 
     override fun deleteBasketByBasketId(basketId: Long) {
-        basketRepository.deleteBasketByBasketId(basketId)
+        basketRepository.deleteById(basketId)
     }
 
 }

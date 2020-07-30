@@ -20,7 +20,7 @@ class GenreRestController(@Autowired val genreService: GenreService) {
         val genres = genreService.findAllGenres()
         return when (genres.isNotEmpty()) {
             true -> ResponseEntity(genres, HttpStatus.OK)
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 
@@ -29,7 +29,7 @@ class GenreRestController(@Autowired val genreService: GenreService) {
         val genre = genreService.findGenreByGenreId(genreId)
         return when (genre.isPresent) {
             true -> ResponseEntity(genre.get(), HttpStatus.OK)
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 
@@ -61,7 +61,7 @@ class GenreRestController(@Autowired val genreService: GenreService) {
                 genreService.saveGenre(genre)
                 ResponseEntity(HttpStatus.OK)
             }
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 
@@ -72,7 +72,7 @@ class GenreRestController(@Autowired val genreService: GenreService) {
                 genreService.deleteGenreByGenreId(genreId)
                 ResponseEntity(HttpStatus.OK)
             }
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 }

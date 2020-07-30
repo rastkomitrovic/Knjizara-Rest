@@ -10,5 +10,4 @@ import org.springframework.stereotype.Repository
 interface StoreRepository : PagingAndSortingRepository<Store, Long> {
     fun existsStoreByAddressOrStoreName(address: String, storeName: String): Boolean
     fun findStoresByAddressContainingOrDescriptionContainingOrStoreNameContainingOrCityContaining(address: String, description: String, storeName: String, city: String, pageable: Pageable): Page<Store>
-    fun deleteStoreByStoreId(storeId: Long)
 }

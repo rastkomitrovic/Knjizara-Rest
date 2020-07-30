@@ -8,5 +8,4 @@ import java.util.*
 @Repository
 interface BasketRepository : CrudRepository<Basket, Long> {
     fun findBasketByUserUsername(username: String): Optional<Basket>
-    fun deleteBasketByBasketId(basketId: Long)
 }

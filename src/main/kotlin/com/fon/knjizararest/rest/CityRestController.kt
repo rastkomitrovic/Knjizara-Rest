@@ -17,7 +17,7 @@ class CityRestController(@Autowired val cityService: CityService) {
         val city = cityService.findCityByCityId(cityId)
         return when (city.isPresent) {
             true -> ResponseEntity(city.get(), HttpStatus.OK)
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 
@@ -31,14 +31,14 @@ class CityRestController(@Autowired val cityService: CityService) {
                 if (cities.isNotEmpty())
                     ResponseEntity(cities, HttpStatus.OK)
                 else
-                    ResponseEntity(HttpStatus.NOT_FOUND)
+                    ResponseEntity(HttpStatus.NO_CONTENT)
             }
             else -> {
                 val cities = cityService.findCitiesByCityNameContaining(param)
                 if (cities.isNotEmpty())
                     ResponseEntity(cities, HttpStatus.OK)
                 else
-                    ResponseEntity(cities, HttpStatus.NOT_FOUND)
+                    ResponseEntity(cities, HttpStatus.NO_CONTENT)
             }
         }
     }
@@ -50,7 +50,7 @@ class CityRestController(@Autowired val cityService: CityService) {
                 cityService.deleteCityByCityId(cityId)
                 ResponseEntity(HttpStatus.OK)
             }
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 
@@ -72,7 +72,7 @@ class CityRestController(@Autowired val cityService: CityService) {
                 cityService.saveCity(city)
                 ResponseEntity(HttpStatus.OK)
             }
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 }

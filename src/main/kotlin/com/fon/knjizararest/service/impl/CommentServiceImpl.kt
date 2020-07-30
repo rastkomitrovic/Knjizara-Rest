@@ -22,6 +22,6 @@ class CommentServiceImpl(@Autowired val commentRepository: CommentRepository) : 
     }
 
     override fun deleteCommentByCommentId(commentId: Long) {
-        commentRepository.deleteCommentByCommentId(commentId)
+        commentRepository.deleteById(commentId)
     }
 }

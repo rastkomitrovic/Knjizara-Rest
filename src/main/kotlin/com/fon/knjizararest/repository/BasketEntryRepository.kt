@@ -9,5 +9,4 @@ import org.springframework.stereotype.Repository
 @Repository
 interface BasketEntryRepository : PagingAndSortingRepository<BasketEntry, Long> {
     fun findBasketEntriesByBasketBasketIdAndActiveEquals(basketId: Long, active: Boolean, pageable: Pageable): Page<BasketEntry>
-    fun deleteBasketEntryByEntryId(entryId: Long)
 }

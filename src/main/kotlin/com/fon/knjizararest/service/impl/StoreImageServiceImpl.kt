@@ -23,6 +23,6 @@ class StoreImageServiceImpl(@Autowired val storeImageRepository: StoreImageRepos
     }
 
     override fun deleteStoreImageByImageId(imageId: Long) {
-        storeImageRepository.deleteStoreImageByImageId(imageId)
+        storeImageRepository.deleteById(imageId)
     }
 }

@@ -22,7 +22,7 @@ class CityServiceImpl(@Autowired val cityRepository: CityRepository) : CityServi
     }
 
     override fun deleteCityByCityId(cityId: Long) {
-        cityRepository.deleteCityByCityId(cityId)
+        cityRepository.deleteById(cityId)
     }
 
     override fun saveCity(city: City) {

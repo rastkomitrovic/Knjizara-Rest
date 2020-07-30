@@ -7,5 +7,4 @@ import org.springframework.stereotype.Repository
 @Repository
 interface CommentRepository :CrudRepository<Comment,Long>{
     fun findCommentsByBookBookId(bookId: Long): List<Comment>
-    fun deleteCommentByCommentId(commentId: Long)
 }

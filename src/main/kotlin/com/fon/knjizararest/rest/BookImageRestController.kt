@@ -26,7 +26,7 @@ class BookImageRestController(@Autowired val bookImageService: BookImageService)
         val images = bookImageService.findBookImagesByBookBookId(bookId)
         return when (images.isNotEmpty()) {
             true -> ResponseEntity(images, HttpStatus.OK)
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 
@@ -50,7 +50,7 @@ class BookImageRestController(@Autowired val bookImageService: BookImageService)
                 bookImageService.deleteBookImageByImageId(imageId)
                 ResponseEntity(HttpStatus.OK)
             }
-            else -> ResponseEntity(HttpStatus.OK)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 }

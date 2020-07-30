@@ -41,6 +41,6 @@ class GenreServiceImpl(@Autowired val genreRepository: GenreRepository) : GenreS
     }
 
     override fun deleteGenreByGenreId(genreId: Long) {
-        return genreRepository.deleteGenreByGenreId(genreId)
+        return genreRepository.deleteById(genreId)
     }
 }

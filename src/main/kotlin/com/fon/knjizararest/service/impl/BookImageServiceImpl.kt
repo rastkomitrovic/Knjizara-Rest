@@ -22,6 +22,6 @@ class BookImageServiceImpl(@Autowired val bookImageRepository: BookImageReposito
     }
 
     override fun deleteBookImageByImageId(imageId: Long) {
-        bookImageRepository.deleteBookImageByImageId(imageId)
+        bookImageRepository.deleteById(imageId)
     }
 }

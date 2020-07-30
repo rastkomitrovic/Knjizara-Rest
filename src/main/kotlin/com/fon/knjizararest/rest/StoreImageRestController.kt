@@ -17,7 +17,7 @@ class StoreImageRestController(@Autowired val storeImageService: StoreImageServi
         val images = storeImageService.findStoreImagesByStoreStoreId(storeId)
         return when (images.isNotEmpty()) {
             true -> ResponseEntity(images, HttpStatus.OK)
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 
@@ -39,7 +39,7 @@ class StoreImageRestController(@Autowired val storeImageService: StoreImageServi
                 storeImageService.deleteStoreImageByImageId(imageId)
                 ResponseEntity(HttpStatus.OK)
             }
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 }

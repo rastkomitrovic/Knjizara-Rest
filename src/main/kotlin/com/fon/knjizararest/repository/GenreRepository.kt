@@ -12,5 +12,4 @@ interface GenreRepository : PagingAndSortingRepository<Genre, Long> {
     fun existsGenreByGenreName(genreName: String): Boolean
     fun findGenresByBooks(book: Book): List<Genre>
     fun findGenresByGenreNameContainingOrDescriptionContaining(genreName: String, description: String, pageable: Pageable): Page<Genre>
-    fun deleteGenreByGenreId(genreId: Long)
 }

@@ -41,6 +41,6 @@ class BookServiceImpl(@Autowired val bookRepository: BookRepository) : BookServi
     }
 
     override fun deleteBookByBookId(bookId: Long) {
-        bookRepository.deleteBookByBookId(bookId)
+        bookRepository.deleteById(bookId)
     }
 }

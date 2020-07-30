@@ -20,7 +20,7 @@ class AuthorRestController(@Autowired val authorService: AuthorService) {
         val authors = authorService.findAllAuthors()
         return when (authors.isNotEmpty()) {
             true -> ResponseEntity(authors, HttpStatus.OK)
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 
@@ -52,7 +52,7 @@ class AuthorRestController(@Autowired val authorService: AuthorService) {
                 authorService.saveAuthor(author)
                 ResponseEntity(HttpStatus.OK)
             }
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 
@@ -63,7 +63,7 @@ class AuthorRestController(@Autowired val authorService: AuthorService) {
                 authorService.deleteByAuthorId(authorId)
                 ResponseEntity(HttpStatus.OK)
             }
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 }

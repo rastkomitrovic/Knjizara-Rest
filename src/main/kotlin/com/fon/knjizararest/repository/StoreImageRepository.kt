@@ -7,5 +7,4 @@ import org.springframework.stereotype.Repository
 @Repository
 interface StoreImageRepository :CrudRepository<StoreImage,Long>{
     fun findStoreImagesByStoreStoreId(storeId: Long): List<StoreImage>
-    fun deleteStoreImageByImageId(imageId: Long)
 }

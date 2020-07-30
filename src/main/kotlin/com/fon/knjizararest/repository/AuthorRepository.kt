@@ -13,5 +13,4 @@ interface AuthorRepository : PagingAndSortingRepository<Author, Long> {
     fun findAuthorsByBooks(book: Book): List<Author>
     fun findAuthorsByFirstNameContainingOrMiddleNameContainingOrLastNameContainingOrDescriptionContaining(firstName: String, middleName: String, lastName: String, description: String, pageable: Pageable): Page<Author>
     fun existsAuthorByFirstNameAndLastNameAndDateOfBirth(firstName: String, lastName: String, dateOfBirth: Date): Boolean
-    fun deleteByAuthorId(authorId: Long)
 }

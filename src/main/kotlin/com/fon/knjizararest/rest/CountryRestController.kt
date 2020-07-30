@@ -17,7 +17,7 @@ class CountryRestController(@Autowired val countryService: CountryService) {
         val country = countryService.findCountryByCountryId(countryId)
         return when (country.isPresent) {
             true -> ResponseEntity(country.get(), HttpStatus.OK)
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 
@@ -26,7 +26,7 @@ class CountryRestController(@Autowired val countryService: CountryService) {
         val countries = countryService.findCountriesByCountryIdNotNull()
         return when (countries.isNotEmpty()) {
             true -> ResponseEntity(countries, HttpStatus.OK)
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 
@@ -48,7 +48,7 @@ class CountryRestController(@Autowired val countryService: CountryService) {
                 countryService.saveCountry(country)
                 ResponseEntity(HttpStatus.OK)
             }
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 
@@ -59,7 +59,7 @@ class CountryRestController(@Autowired val countryService: CountryService) {
                 countryService.deleteCountryByCountryId(countryId)
                 ResponseEntity(HttpStatus.OK)
             }
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 }

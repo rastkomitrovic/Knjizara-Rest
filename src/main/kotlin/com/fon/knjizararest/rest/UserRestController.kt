@@ -17,7 +17,7 @@ class UserRestController(@Autowired val userService: UserService) {
         val user = userService.findUserByUsername(username)
         return when (user.isPresent) {
             true -> ResponseEntity(user.get(), HttpStatus.OK)
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 
@@ -28,7 +28,7 @@ class UserRestController(@Autowired val userService: UserService) {
                 userService.deleteUserByUsername(username)
                 ResponseEntity(HttpStatus.OK)
             }
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 
@@ -50,7 +50,7 @@ class UserRestController(@Autowired val userService: UserService) {
                 userService.saveUser(user)
                 ResponseEntity(HttpStatus.OK)
             }
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 }

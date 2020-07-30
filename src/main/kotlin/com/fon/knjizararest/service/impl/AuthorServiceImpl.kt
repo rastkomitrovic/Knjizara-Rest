@@ -37,7 +37,7 @@ class AuthorServiceImpl(@Autowired val authorRepository: AuthorRepository) : Aut
     }
 
     override fun deleteByAuthorId(authorId: Long) {
-        authorRepository.deleteByAuthorId(authorId)
+        authorRepository.deleteById(authorId)
     }
 
     override fun saveAuthor(author: Author) {

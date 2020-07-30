@@ -28,7 +28,7 @@ class ReservationServiceImpl(@Autowired val reservationRepository: ReservationRe
     }
 
     override fun deleteReservationByReservationId(reservationId: Long) {
-        reservationRepository.deleteReservationByReservationId(reservationId)
+        reservationRepository.deleteById(reservationId)
     }
 
     override fun existsByEntryEntryId(entryId: Long): Boolean {

@@ -38,7 +38,7 @@ class BasketEntryRestController(@Autowired val basketEntryService: BasketEntrySe
                 basketEntryService.saveBasketEntry(basketEntry)
                 ResponseEntity(HttpStatus.OK)
             }
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 
@@ -49,7 +49,7 @@ class BasketEntryRestController(@Autowired val basketEntryService: BasketEntrySe
                 basketEntryService.deleteBasketEntryByEntryId(entryId)
                 ResponseEntity(HttpStatus.OK)
             }
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 }

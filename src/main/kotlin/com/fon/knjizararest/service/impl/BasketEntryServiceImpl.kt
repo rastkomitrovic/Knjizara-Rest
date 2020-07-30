@@ -25,7 +25,7 @@ class BasketEntryServiceImpl(@Autowired val basketEntryRepository: BasketEntryRe
 
 
     override fun deleteBasketEntryByEntryId(entryId: Long) {
-        basketEntryRepository.deleteBasketEntryByEntryId(entryId)
+        basketEntryRepository.deleteById(entryId)
     }
 
 }

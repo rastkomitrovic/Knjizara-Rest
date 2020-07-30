@@ -9,6 +9,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface ReservationRepository :PagingAndSortingRepository<Reservation,Long>{
     fun findReservationsByStatus(status:String,pageable: Pageable):Page<Reservation>
-    fun deleteReservationByReservationId(reservationId:Long)
     fun existsByEntryEntryId(entryId: Long): Boolean
 }
