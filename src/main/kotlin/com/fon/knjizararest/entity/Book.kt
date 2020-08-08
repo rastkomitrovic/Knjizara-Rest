@@ -15,5 +15,7 @@ data class Book(
         @Column(name = "language", nullable = false) val language: String,
         @OneToMany(mappedBy = "book") val images: List<BookImage>,
         @ManyToMany(mappedBy = "books") val genres: List<Genre>,
-        @ManyToMany(mappedBy = "books") val authors: List<Author>
+        @ManyToMany(mappedBy = "books") val authors: List<Author>,
+        @OneToMany(mappedBy = "book") val comments:List<Comment>,
+        var rating:Float
 )
