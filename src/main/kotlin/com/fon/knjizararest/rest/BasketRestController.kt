@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/v0/baskets")
 class BasketRestController(@Autowired val basketService: BasketService) {
 
-    @GetMapping("/{basketId}", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun findBasketByBasketId(@PathVariable basketId: Long): ResponseEntity<Basket> {
-        val basket = basketService.findBasketByBasketId(basketId)
+    @GetMapping("/{username}", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun findBasketByBasketId(@PathVariable username: String): ResponseEntity<Basket> {
+        val basket = basketService.findBasketByUserUsername(username)
         return when (basket.isPresent) {
             true -> ResponseEntity(basket.get(), HttpStatus.OK)
             else -> ResponseEntity(HttpStatus.NO_CONTENT)

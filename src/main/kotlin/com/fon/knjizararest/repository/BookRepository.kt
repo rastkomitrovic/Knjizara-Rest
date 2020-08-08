@@ -13,5 +13,5 @@ interface BookRepository:PagingAndSortingRepository<Book,Long> {
     fun findBooksByBookNameContainingOrISBNEquals(bookName: String, ISBN: String, pageable: Pageable):Page<Book>
     fun findBooksByAuthors(author: Author, pageable: Pageable): Page<Book>
     fun existsBookByBookNameOrISBN(bookName:String,ISBN:String):Boolean
-    fun findBookByComments(comments:List<Comment>):Book
+    fun findBookByCommentsIn(comments:List<Comment>):Book
 }
