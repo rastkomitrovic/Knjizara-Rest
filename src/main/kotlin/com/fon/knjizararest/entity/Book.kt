@@ -2,6 +2,7 @@ package com.fon.knjizararest.entity
 
 import javax.persistence.*
 
+
 @Entity
 @Table(name = "book")
 data class Book(
@@ -17,5 +18,5 @@ data class Book(
         @ManyToMany(mappedBy = "books") val genres: List<Genre>,
         @ManyToMany(mappedBy = "books") val authors: List<Author>,
         @OneToMany(mappedBy = "book") val comments:List<Comment>,
-        var rating:Float
+        @Column(name = "rating", nullable = false) var rating:Float
 )
