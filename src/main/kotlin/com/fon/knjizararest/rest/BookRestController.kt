@@ -25,6 +25,22 @@ class BookRestController(@Autowired val bookService: BookService) {
         }
     }
 
+    @GetMapping("/bestReviews",produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun getBestReviewBooks(): ResponseEntity<List<Book>> {
+        val books = bookService.findAllBooks()
+        books.sortedWith(Comparator<Book>{ b1,b2 ->
+            when (b1.rating>b2.rating){
+                    true -> -1
+                    false -> 1
+                }
+            }
+        )
+        return when (books.isNotEmpty()) {
+            true -> ResponseEntity(books, HttpStatus.OK)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
+        }
+    }
+
     @GetMapping("/{bookId}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findBookByBookId(@PathVariable bookId: Long): ResponseEntity<Book> {
         val book = bookService.findBookByBookId(bookId)
