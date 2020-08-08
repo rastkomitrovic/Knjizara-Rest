@@ -13,11 +13,26 @@ import java.util.*
 @Service
 class BookServiceImpl(@Autowired val bookRepository: BookRepository) : BookService {
     override fun findAllBooks(): List<Book> {
-        return bookRepository.findAll().toList()
+        val books=bookRepository.findAll().toList()
+        books.forEach {
+            var sum=0f
+            it.comments.forEach { sum+= it.rating }
+            it.rating=sum/it.comments.size
+        }
+        return books
     }
 
     override fun findBookByBookId(bookId: Long): Optional<Book> {
-        return bookRepository.findById(bookId)
+        val book= bookRepository.findById(bookId)
+        return when (book.isPresent){
+            true -> {
+                var sum=0f
+                book.get().comments.forEach { sum+=it.rating }
+                book.get().rating=sum/book.get().comments.size
+                book
+            }
+            else -> book
+        }
     }
 
     override fun saveBook(book: Book) {
@@ -25,11 +40,23 @@ class BookServiceImpl(@Autowired val bookRepository: BookRepository) : BookServi
     }
 
     override fun findBooks(pageable: Pageable): Page<Book> {
-        return bookRepository.findAll(pageable)
+        val page=bookRepository.findAll(pageable)
+        page.forEach {
+            var sum=0f
+            it.comments.forEach { sum+= it.rating }
+            it.rating=sum/it.comments.size
+        }
+        return page
     }
 
     override fun findBooksByBookNameContainingOrAuthorsOrISBNEquals(param: String, pageable: Pageable): Page<Book> {
-        return bookRepository.findBooksByBookNameContainingOrISBNEquals(param, param, pageable)
+        val page=bookRepository.findBooksByBookNameContainingOrISBNEquals(param, param, pageable)
+        page.forEach {
+            var sum=0f
+            it.comments.forEach { sum+= it.rating }
+            it.rating=sum/it.comments.size
+        }
+        return page
     }
 
     override fun findBooksByAuthors(author: Author, pageable: Pageable): Page<Book> {
