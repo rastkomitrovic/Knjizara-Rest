@@ -16,7 +16,7 @@ class CommentServiceImpl(@Autowired val commentRepository: CommentRepository , @
 
     override fun saveComment(comment: Comment) {
         commentRepository.save(comment)
-        val book=bookRepository.findBookByComments(listOf(commentRepository.findById(commentId).get()))
+        val book=bookRepository.findBookByComments(listOf(comment))
         var sum=0f;
         book.comments.forEach {
             sum+=it.rating
