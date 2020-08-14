@@ -1,5 +1,6 @@
 package com.fon.knjizararest.entity
 
+import com.fasterxml.jackson.annotation.JsonManagedReference
 import javax.persistence.*
 
 @Entity
@@ -7,5 +8,5 @@ import javax.persistence.*
 data class Basket(
         @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "basket_id", nullable = false) val basketId: Long,
         @OneToOne @JoinColumn(name = "user_id", nullable = false) val user: User,
-        @OneToMany(mappedBy = "basket") val entries: List<BasketEntry>
+        @OneToMany(mappedBy = "basket") @JsonManagedReference val entries: List<BasketEntry>
 )

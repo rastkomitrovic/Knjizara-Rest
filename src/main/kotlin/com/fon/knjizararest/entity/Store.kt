@@ -1,5 +1,6 @@
 package com.fon.knjizararest.entity
 
+import com.fasterxml.jackson.annotation.JsonManagedReference
 import javax.persistence.*
 
 @Entity
@@ -10,5 +11,5 @@ data class Store(
         @Column(name = "description", nullable = true) val description: String? = "",
         @Column(name = "address", nullable = false) val address: String,
         @ManyToOne @JoinColumn(name = "city_id", nullable = false) val city: City,
-        @OneToMany(mappedBy = "store")  val images: List<StoreImage>
+        @OneToMany(mappedBy = "store") @JsonManagedReference val images: List<StoreImage>
 )

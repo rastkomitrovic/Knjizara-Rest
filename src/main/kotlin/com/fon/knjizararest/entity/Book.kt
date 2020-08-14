@@ -1,5 +1,6 @@
 package com.fon.knjizararest.entity
 
+import com.fasterxml.jackson.annotation.JsonManagedReference
 import javax.persistence.*
 
 
@@ -14,9 +15,9 @@ data class Book(
         @Column(name = "stock", nullable = false) val stock: Long,
         @Column(name = "number_of_sold_copies", nullable = false) val numberOfSoldCopies: Long,
         @Column(name = "language", nullable = false) val language: String,
-        @OneToMany(mappedBy = "book") val images: List<BookImage>,
-        @ManyToMany(mappedBy = "books") val genres: List<Genre>,
-        @ManyToMany(mappedBy = "books") val authors: List<Author>,
-        @OneToMany(mappedBy = "book") val comments:List<Comment>,
+        @OneToMany(mappedBy = "book") @JsonManagedReference val images: List<BookImage>,
+        @ManyToMany(mappedBy = "books") @JsonManagedReference  val genres: List<Genre>,
+        @ManyToMany(mappedBy = "books") @JsonManagedReference  val authors: List<Author>,
+        @OneToMany(mappedBy = "book") @JsonManagedReference  val comments:List<Comment>,
         @Column(name = "rating", nullable = false) var rating:Float
 )

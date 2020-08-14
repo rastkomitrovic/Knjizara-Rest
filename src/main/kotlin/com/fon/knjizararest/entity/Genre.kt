@@ -1,5 +1,6 @@
 package com.fon.knjizararest.entity
 
+import com.fasterxml.jackson.annotation.JsonBackReference
 import javax.persistence.*
 
 @Entity
@@ -12,5 +13,5 @@ data class Genre(
                 name = "book_genre",
                 joinColumns = [JoinColumn(name = "genre_id", nullable = false)],
                 inverseJoinColumns = [JoinColumn(name = "book_id", nullable = false)]
-        ) val books: List<Book>
+        ) @JsonBackReference val books: List<Book>
 )
