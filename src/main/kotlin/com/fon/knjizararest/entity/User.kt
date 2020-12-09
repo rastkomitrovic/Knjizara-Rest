@@ -15,5 +15,6 @@ data class User(
         @Column(name = "phone", nullable = false) val phone: String,
         @Column(name = "address", nullable = false) val address: String,
         @Column(name = "date_of_birth", nullable = false) val dateOfBirth: Date,
-        @ManyToOne @JoinColumn(name = "city_id", nullable = false) val city: City
+        @ManyToOne @JoinColumn(name = "city_id", nullable = false) val city: City,
+        @Column(name = "role", nullable = false) val role: String
 )
