@@ -21,6 +21,11 @@ class UserRestController(@Autowired val userService: UserService) {
         }
     }
 
+    @GetMapping("exists/{username}",produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun existsUserWithUsername(@PathVariable username: String):ResponseEntity<Boolean>{
+        return ResponseEntity(userService.findUserByUsername(username).isPresent,HttpStatus.OK)
+    }
+
     @DeleteMapping("/{username}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun deleteUserByUsername(@PathVariable username: String): ResponseEntity<Any> {
         return when (userService.findUserByUsername(username).isPresent) {
