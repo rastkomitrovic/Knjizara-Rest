@@ -3,6 +3,7 @@ package com.fon.knjizararest.rest
 import com.fon.knjizararest.entity.Author
 import com.fon.knjizararest.entity.Book
 import com.fon.knjizararest.service.BookService
+import org.apache.coyote.Response
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -25,18 +26,21 @@ class BookRestController(@Autowired val bookService: BookService) {
         }
     }
 
-    @GetMapping("/bestReviews",produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/top10", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun getBestReviewBooks(): ResponseEntity<List<Book>> {
         val books = bookService.findAllBooks()
-        books.sortedWith(Comparator<Book>{ b1,b2 ->
-            when (b1.rating>b2.rating){
-                    true -> -1
-                    false -> 1
-                }
+        books.sortedWith(Comparator<Book> { b1, b2 ->
+            when (b1.rating > b2.rating) {
+                true -> -1
+                false -> 1
             }
+        }
         )
         return when (books.isNotEmpty()) {
-            true -> ResponseEntity(books, HttpStatus.OK)
+            true -> when (books.size >= 10) {
+                true -> ResponseEntity(books.subList(0, 9), HttpStatus.OK)
+                else -> ResponseEntity(books.subList(0, books.size - 1), HttpStatus.OK)
+            }
             else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
@@ -57,17 +61,32 @@ class BookRestController(@Autowired val bookService: BookService) {
 
     @GetMapping("/{page}/{size}/{sort}/{search}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findBooksPagingSearch(@PathVariable page: Int, @PathVariable size: Int, @PathVariable sort: String, @PathVariable search: String): ResponseEntity<Page<Book>> {
-        return ResponseEntity(bookService.findBooksByBookNameContainingOrAuthorsOrISBNEquals(search, PageRequest.of(page, size, Sort.by(sort))), HttpStatus.OK)
+        return ResponseEntity(bookService.findBooksSearch(search, PageRequest.of(page, size, Sort.by(sort))), HttpStatus.OK)
     }
 
-    @PostMapping("/authorSearch/{page}/{size}/{sort}", consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun findBooksByAuthor(@RequestBody author: Author, @PathVariable page: Int, @PathVariable size: Int, @PathVariable sort: String): ResponseEntity<Page<Book>> {
-        return ResponseEntity(bookService.findBooksByAuthors(author, PageRequest.of(page, size, Sort.by(sort))), HttpStatus.OK)
+    @GetMapping("/authorSearch/{authorId}/{page}/{size}/{sort}", consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun findBooksByAuthor(@PathVariable authorId: Long, @PathVariable page: Int, @PathVariable size: Int, @PathVariable sort: String): ResponseEntity<Page<Book>> {
+        return ResponseEntity(bookService.findBooksByAuthors(authorId, PageRequest.of(page, size, Sort.by(sort))), HttpStatus.OK)
+    }
+
+    @GetMapping("/publisherSearch/{publisherId}/{page}/{size}/{sort}", consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun findBooksByPublisher(@PathVariable publisherId: Long, @PathVariable page: Int, @PathVariable size: Int, @PathVariable sort: String): ResponseEntity<Page<Book>> {
+        return ResponseEntity(bookService.findBooksByPublisher(publisherId, PageRequest.of(page, size, Sort.by(sort))), HttpStatus.OK)
+    }
+
+    @GetMapping("/genreSearch/{genreId}/{page}/{size}/{sort}", consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun findBooksByGenre(@PathVariable genreId: Long, @PathVariable page: Int, @PathVariable size: Int, @PathVariable sort: String): ResponseEntity<Page<Book>> {
+        return ResponseEntity(bookService.findBooksByGenre(genreId, PageRequest.of(page, size, Sort.by(sort))), HttpStatus.OK)
+    }
+
+    @GetMapping("/existsByIsbn/{ISBN}", consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun existsBookByISBN(@PathVariable ISBN: String): ResponseEntity<Boolean> {
+        return ResponseEntity(bookService.existsBookISBN(ISBN), HttpStatus.OK)
     }
 
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun saveBook(@RequestBody book: Book): ResponseEntity<Any> {
-        return when (bookService.findBookByBookId(book.bookId).isPresent || bookService.existsBookByBookNameOrISBN(book.bookName, book.ISBN)) {
+        return when (bookService.findBookByBookId(book.bookId).isPresent || bookService.existsBookISBN(book.ISBN)) {
             false -> {
                 bookService.saveBook(book)
                 ResponseEntity(HttpStatus.OK)

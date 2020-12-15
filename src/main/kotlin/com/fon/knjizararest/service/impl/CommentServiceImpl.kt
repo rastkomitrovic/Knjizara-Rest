@@ -16,13 +16,6 @@ class CommentServiceImpl(@Autowired val commentRepository: CommentRepository , @
 
     override fun saveComment(comment: Comment) {
         commentRepository.save(comment)
-        val book=bookRepository.findBookByCommentsIn(listOf(comment))
-        var sum=0f;
-        book.comments.forEach {
-            sum+=it.rating
-        }
-        book.rating=sum/(book.comments.size)
-        bookRepository.save(book)
     }
 
     override fun findCommentsByBookBookId(bookId: Long): List<Comment> {
@@ -30,14 +23,6 @@ class CommentServiceImpl(@Autowired val commentRepository: CommentRepository , @
     }
 
     override fun deleteCommentByCommentId(commentId: Long) {
-        val book=bookRepository.findBookByCommentsIn(listOf(commentRepository.findById(commentId).get()))
-        var sum=0f;
-        book.comments.forEach {
-            if(it.commentId!=commentId)
-                sum+=it.rating
-        }
-        book.rating=sum/(book.comments.size - 1)
-        bookRepository.save(book)
         commentRepository.deleteById(commentId)
     }
 }

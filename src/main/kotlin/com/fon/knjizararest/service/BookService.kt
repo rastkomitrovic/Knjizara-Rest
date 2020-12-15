@@ -11,8 +11,10 @@ interface BookService {
     fun findBookByBookId(bookId: Long): Optional<Book> //default method
     fun saveBook(book: Book) //default method
     fun findBooks(pageable: Pageable): Page<Book> //default method
-    fun findBooksByBookNameContainingOrAuthorsOrISBNEquals(param: String, pageable: Pageable): Page<Book>
-    fun findBooksByAuthors(author: Author, pageable: Pageable): Page<Book>
-    fun existsBookByBookNameOrISBN(bookName: String, ISBN: String): Boolean
+    fun findBooksSearch(param: String, pageable: Pageable): Page<Book>
+    fun findBooksByAuthors(authorId: Long, pageable: Pageable): Page<Book>
+    fun findBooksByPublisher(publisherId: Long, pageable: Pageable): Page<Book>
+    fun findBooksByGenre(genreId: Long, pageable: Pageable): Page<Book>
+    fun existsBookISBN(ISBN: String): Boolean
     fun deleteBookByBookId(bookId: Long)
 }

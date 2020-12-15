@@ -13,26 +13,11 @@ import java.util.*
 @Service
 class BookServiceImpl(@Autowired val bookRepository: BookRepository) : BookService {
     override fun findAllBooks(): List<Book> {
-        val books=bookRepository.findAll().toList()
-        books.forEach {
-            var sum=0f
-            it.comments.forEach { sum+= it.rating }
-            it.rating=sum/it.comments.size
-        }
-        return books
+        return bookRepository.findAll().toList()
     }
 
     override fun findBookByBookId(bookId: Long): Optional<Book> {
-        val book= bookRepository.findById(bookId)
-        return when (book.isPresent){
-            true -> {
-                var sum=0f
-                book.get().comments.forEach { sum+=it.rating }
-                book.get().rating=sum/book.get().comments.size
-                book
-            }
-            else -> book
-        }
+        return bookRepository.findById(bookId)
     }
 
     override fun saveBook(book: Book) {
@@ -40,34 +25,30 @@ class BookServiceImpl(@Autowired val bookRepository: BookRepository) : BookServi
     }
 
     override fun findBooks(pageable: Pageable): Page<Book> {
-        val page=bookRepository.findAll(pageable)
-        page.forEach {
-            var sum=0f
-            it.comments.forEach { sum+= it.rating }
-            it.rating=sum/it.comments.size
-        }
-        return page
+        return bookRepository.findAll(pageable)
     }
 
-    override fun findBooksByBookNameContainingOrAuthorsOrISBNEquals(param: String, pageable: Pageable): Page<Book> {
-        val page=bookRepository.findBooksByBookNameContainingOrISBNEquals(param, param, pageable)
-        page.forEach {
-            var sum=0f
-            it.comments.forEach { sum+= it.rating }
-            it.rating=sum/it.comments.size
-        }
-        return page
+    override fun findBooksSearch(param: String, pageable: Pageable): Page<Book> {
+        return bookRepository.findBooksSearch(param, pageable)
     }
 
-    override fun findBooksByAuthors(author: Author, pageable: Pageable): Page<Book> {
-        return bookRepository.findBooksByAuthors(author, pageable)
+    override fun findBooksByAuthors(authorId: Long, pageable: Pageable): Page<Book> {
+        return bookRepository.findBooksByAuthors(authorId, pageable)
     }
 
-    override fun existsBookByBookNameOrISBN(bookName: String, ISBN: String): Boolean {
-        return bookRepository.existsBookByBookNameOrISBN(bookName, ISBN)
+    override fun findBooksByPublisher(publisherId: Long, pageable: Pageable): Page<Book> {
+        return bookRepository.findBooksByPublisher(publisherId, pageable)
+    }
+
+    override fun existsBookISBN(ISBN: String): Boolean {
+        return bookRepository.existsBookISBN(ISBN).isPresent
     }
 
     override fun deleteBookByBookId(bookId: Long) {
         bookRepository.deleteById(bookId)
+    }
+
+    override fun findBooksByGenre(genreId: Long, pageable: Pageable): Page<Book> {
+        return bookRepository.findBooksByGenre(genreId, pageable)
     }
 }
