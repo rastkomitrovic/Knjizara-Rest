@@ -1,6 +1,5 @@
 package com.fon.knjizararest.service
 
-import com.fon.knjizararest.entity.Author
 import com.fon.knjizararest.entity.Book
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -17,4 +16,5 @@ interface BookService {
     fun findBooksByGenre(genreId: Long, pageable: Pageable): Page<Book>
     fun existsBookISBN(ISBN: String): Boolean
     fun deleteBookByBookId(bookId: Long)
+    fun findBooksSearchSuggest(search: String, pageable: Pageable): List<Book>
 }

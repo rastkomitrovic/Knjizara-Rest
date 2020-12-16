@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import javax.swing.SortOrder
 
 @RestController
 @RequestMapping("/api/v0/books")
@@ -38,8 +39,8 @@ class BookRestController(@Autowired val bookService: BookService) {
         )
         return when (books.isNotEmpty()) {
             true -> when (books.size >= 10) {
-                true -> ResponseEntity(books.subList(0, 9), HttpStatus.OK)
-                else -> ResponseEntity(books.subList(0, books.size - 1), HttpStatus.OK)
+                true -> ResponseEntity(books.subList(0, 10), HttpStatus.OK)
+                else -> ResponseEntity(books.subList(0, books.size), HttpStatus.OK)
             }
             else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
@@ -62,6 +63,11 @@ class BookRestController(@Autowired val bookService: BookService) {
     @GetMapping("/{page}/{size}/{sort}/{search}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findBooksPagingSearch(@PathVariable page: Int, @PathVariable size: Int, @PathVariable sort: String, @PathVariable search: String): ResponseEntity<Page<Book>> {
         return ResponseEntity(bookService.findBooksSearch(search, PageRequest.of(page, size, Sort.by(sort))), HttpStatus.OK)
+    }
+
+    @GetMapping("/searchSuggest/{search}", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun findBooksSearchSuggest(@PathVariable search: String): ResponseEntity<List<Book>> {
+        return ResponseEntity(bookService.findBooksSearchSuggest(search, PageRequest.of(0, 4, Sort.by("rating").descending())), HttpStatus.OK)
     }
 
     @GetMapping("/authorSearch/{authorId}/{page}/{size}/{sort}", consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])

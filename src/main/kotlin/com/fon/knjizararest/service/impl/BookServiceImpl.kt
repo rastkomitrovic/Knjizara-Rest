@@ -48,6 +48,10 @@ class BookServiceImpl(@Autowired val bookRepository: BookRepository) : BookServi
         bookRepository.deleteById(bookId)
     }
 
+    override fun findBooksSearchSuggest(search: String, pageable: Pageable): List<Book> {
+        return bookRepository.findBooksSearchSuggest(search,pageable)
+    }
+
     override fun findBooksByGenre(genreId: Long, pageable: Pageable): Page<Book> {
         return bookRepository.findBooksByGenre(genreId, pageable)
     }
