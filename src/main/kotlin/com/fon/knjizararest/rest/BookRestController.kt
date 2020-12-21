@@ -12,7 +12,9 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.util.*
 import javax.swing.SortOrder
+import kotlin.Comparator
 
 @RestController
 @RequestMapping("/api/v0/books")
@@ -65,14 +67,22 @@ class BookRestController(@Autowired val bookService: BookService) {
         return ResponseEntity(bookService.findBooksSearch(search, PageRequest.of(page, size, Sort.by(sort))), HttpStatus.OK)
     }
 
+    @CrossOrigin(origins = arrayOf("http://localhost:9099"))
     @GetMapping("/searchSuggest/{search}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findBooksSearchSuggest(@PathVariable search: String): ResponseEntity<List<Book>> {
         return ResponseEntity(bookService.findBooksSearchSuggest(search, PageRequest.of(0, 4, Sort.by("rating").descending())), HttpStatus.OK)
     }
 
+
     @GetMapping("/authorSearch/{authorId}/{page}/{size}/{sort}", consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findBooksByAuthor(@PathVariable authorId: Long, @PathVariable page: Int, @PathVariable size: Int, @PathVariable sort: String): ResponseEntity<Page<Book>> {
         return ResponseEntity(bookService.findBooksByAuthors(authorId, PageRequest.of(page, size, Sort.by(sort))), HttpStatus.OK)
+    }
+
+    @CrossOrigin(origins = arrayOf("http://localhost:9099"))
+    @GetMapping("/isAvailable/{bookId}/{quantity}")
+    fun isAvailable(@PathVariable bookId:Long, @PathVariable quantity:Long) :ResponseEntity<Boolean>{
+        return ResponseEntity(bookService.findBookByBookId(bookId).get().stock>=quantity,HttpStatus.OK)
     }
 
     @GetMapping("/publisherSearch/{publisherId}/{page}/{size}/{sort}", consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
