@@ -22,4 +22,8 @@ data class Book(
         @OneToMany(mappedBy = "book") @JsonManagedReference val comments: List<Comment>,
         @Column(name = "rating", nullable = false) val rating: Float,
         @ManyToOne @JoinColumn(name = "publisher_id", nullable = false) val publisher: Publisher
-)
+){
+    override fun toString(): String {
+        return bookName
+    }
+}

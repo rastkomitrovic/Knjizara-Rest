@@ -29,7 +29,7 @@ class BookRestController(@Autowired val bookService: BookService) {
         }
     }
 
-    @GetMapping("/top10", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/top12", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun getBestReviewBooks(): ResponseEntity<List<Book>> {
         val books = bookService.findAllBooks()
         books.sortedWith(Comparator<Book> { b1, b2 ->
@@ -40,14 +40,15 @@ class BookRestController(@Autowired val bookService: BookService) {
         }
         )
         return when (books.isNotEmpty()) {
-            true -> when (books.size >= 10) {
-                true -> ResponseEntity(books.subList(0, 10), HttpStatus.OK)
+            true -> when (books.size >= 12) {
+                true -> ResponseEntity(books.subList(0, 12), HttpStatus.OK)
                 else -> ResponseEntity(books.subList(0, books.size), HttpStatus.OK)
             }
             else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 
+    @CrossOrigin(origins = arrayOf("http://localhost:9099"))
     @GetMapping("/{bookId}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findBookByBookId(@PathVariable bookId: Long): ResponseEntity<Book> {
         val book = bookService.findBookByBookId(bookId)
@@ -74,7 +75,7 @@ class BookRestController(@Autowired val bookService: BookService) {
     }
 
 
-    @GetMapping("/authorSearch/{authorId}/{page}/{size}/{sort}", consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/authorSearch/{authorId}/{page}/{size}/{sort}",  produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findBooksByAuthor(@PathVariable authorId: Long, @PathVariable page: Int, @PathVariable size: Int, @PathVariable sort: String): ResponseEntity<Page<Book>> {
         return ResponseEntity(bookService.findBooksByAuthors(authorId, PageRequest.of(page, size, Sort.by(sort))), HttpStatus.OK)
     }
@@ -82,20 +83,21 @@ class BookRestController(@Autowired val bookService: BookService) {
     @CrossOrigin(origins = arrayOf("http://localhost:9099"))
     @GetMapping("/isAvailable/{bookId}/{quantity}")
     fun isAvailable(@PathVariable bookId:Long, @PathVariable quantity:Long) :ResponseEntity<Boolean>{
-        return ResponseEntity(bookService.findBookByBookId(bookId).get().stock>=quantity,HttpStatus.OK)
+        val book=bookService.findBookByBookId(bookId)
+        return ResponseEntity(book.get().stock>=quantity,HttpStatus.OK)
     }
 
-    @GetMapping("/publisherSearch/{publisherId}/{page}/{size}/{sort}", consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/publisherSearch/{publisherId}/{page}/{size}/{sort}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findBooksByPublisher(@PathVariable publisherId: Long, @PathVariable page: Int, @PathVariable size: Int, @PathVariable sort: String): ResponseEntity<Page<Book>> {
         return ResponseEntity(bookService.findBooksByPublisher(publisherId, PageRequest.of(page, size, Sort.by(sort))), HttpStatus.OK)
     }
 
-    @GetMapping("/genreSearch/{genreId}/{page}/{size}/{sort}", consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/genreSearch/{genreId}/{page}/{size}/{sort}",  produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findBooksByGenre(@PathVariable genreId: Long, @PathVariable page: Int, @PathVariable size: Int, @PathVariable sort: String): ResponseEntity<Page<Book>> {
         return ResponseEntity(bookService.findBooksByGenre(genreId, PageRequest.of(page, size, Sort.by(sort))), HttpStatus.OK)
     }
 
-    @GetMapping("/existsByIsbn/{ISBN}", consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/existsByIsbn/{ISBN}",  produces = [MediaType.APPLICATION_JSON_VALUE])
     fun existsBookByISBN(@PathVariable ISBN: String): ResponseEntity<Boolean> {
         return ResponseEntity(bookService.existsBookISBN(ISBN), HttpStatus.OK)
     }
