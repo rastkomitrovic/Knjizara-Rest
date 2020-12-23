@@ -13,7 +13,7 @@ import java.util.*
 @Service
 class AuthorServiceImpl(@Autowired val authorRepository: AuthorRepository) : AuthorService {
     override fun findAllAuthors(): List<Author> {
-        return authorRepository.findAll().toList()
+        return authorRepository.findAll().sortedBy { it.firstName }.toList()
     }
 
     override fun findAllAuthors(pageable: Pageable): Page<Author> {

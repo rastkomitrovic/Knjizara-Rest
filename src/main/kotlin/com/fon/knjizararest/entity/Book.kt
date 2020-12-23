@@ -9,7 +9,7 @@ import javax.persistence.*
 @Table(name = "book")
 data class Book(
         @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "book_id", nullable = false) val bookId: Long,
-        @Column(name = "ISBN", nullable = false) val ISBN: String,
+        @Column(name = "isbn", nullable = false) val ISBN: String,
         @Column(name = "book_name", nullable = false) val bookName: String,
         @Column(name = "description", nullable = true) val description: String? = "",
         @Column(name = "price", nullable = false) val price: Double,

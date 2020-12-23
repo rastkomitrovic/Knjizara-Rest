@@ -17,7 +17,7 @@ class GenreServiceImpl(@Autowired val genreRepository: GenreRepository) : GenreS
     }
 
     override fun findAllGenres(): List<Genre> {
-        return genreRepository.findAll().toList()
+        return genreRepository.findAll().sortedBy { it.genreName }.toList()
     }
 
     override fun findGenres(pageable: Pageable): Page<Genre> {
