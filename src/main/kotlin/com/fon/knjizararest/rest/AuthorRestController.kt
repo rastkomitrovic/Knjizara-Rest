@@ -24,6 +24,15 @@ class AuthorRestController(@Autowired val authorService: AuthorService) {
         }
     }
 
+    @GetMapping("/{authorId}", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun findAuthorWithId(@PathVariable authorId:Long):ResponseEntity<Author>{
+        val author=authorService.findAuthorByAuthorId(authorId)
+        return when(author.isPresent){
+            true -> ResponseEntity(author.get(),HttpStatus.OK)
+            else -> ResponseEntity(HttpStatus.NO_CONTENT)
+        }
+    }
+
     @GetMapping("/{page}/{size}/{sort}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findAllAuthors(@PathVariable page: Int, @PathVariable size: Int, @PathVariable sort: String): ResponseEntity<Page<Author>> {
         return ResponseEntity(authorService.findAllAuthors(PageRequest.of(page, size, Sort.by(sort))), HttpStatus.OK)
