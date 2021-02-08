@@ -25,4 +25,8 @@ class CommentServiceImpl(@Autowired val commentRepository: CommentRepository , @
     override fun deleteCommentByCommentId(commentId: Long) {
         commentRepository.deleteById(commentId)
     }
+
+    override fun existsCommentByUser(username: String, bookId: Long): Boolean {
+        return commentRepository.existsCommentByUser(username, bookId).isPresent
+    }
 }

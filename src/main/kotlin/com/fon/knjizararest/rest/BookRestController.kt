@@ -1,5 +1,6 @@
 package com.fon.knjizararest.rest
 
+import com.fon.knjizararest.dto.BookRequest
 import com.fon.knjizararest.entity.Author
 import com.fon.knjizararest.entity.Book
 import com.fon.knjizararest.service.BookService
@@ -103,10 +104,10 @@ class BookRestController(@Autowired val bookService: BookService) {
     }
 
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun saveBook(@RequestBody book: Book): ResponseEntity<Any> {
-        return when (bookService.findBookByBookId(book.bookId).isPresent || bookService.existsBookISBN(book.ISBN)) {
+    fun saveBook(@RequestBody book: BookRequest): ResponseEntity<Any> {
+        return when ( bookService.existsBookISBN(book.ISBN)) {
             false -> {
-                bookService.saveBook(book)
+                //bookService.saveBook(book)
                 ResponseEntity(HttpStatus.OK)
             }
             else -> ResponseEntity(HttpStatus.FOUND)

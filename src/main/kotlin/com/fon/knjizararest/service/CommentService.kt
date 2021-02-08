@@ -8,4 +8,5 @@ interface CommentService {
     fun saveComment(comment: Comment) //default method
     fun findCommentsByBookBookId(bookId: Long): List<Comment>
     fun deleteCommentByCommentId(commentId: Long)
+    fun existsCommentByUser(username: String, bookId: Long): Boolean
 }
