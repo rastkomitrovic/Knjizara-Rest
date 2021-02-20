@@ -1,54 +1,66 @@
 package com.fon.knjizararest.rest
 
+import com.fon.knjizararest.dto.OrderRequest
+import com.fon.knjizararest.entity.Book
 import com.fon.knjizararest.entity.Order
+import com.fon.knjizararest.entity.OrderItem
+import com.fon.knjizararest.service.BookService
 import com.fon.knjizararest.service.OrderService
+import com.fon.knjizararest.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @RestController
 @RequestMapping("/api/v0/orders")
-class OrderRestController(@Autowired val orderService: OrderService) {
+class OrderRestController @Autowired constructor(
+        val orderService: OrderService,
+        val userService: UserService,
+        val bookService: BookService
+) {
 
     @GetMapping("/{username}", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun findOrderByOrderId(@PathVariable username: String): ResponseEntity<List<Order>> {
+    fun findOrderByUsername(@PathVariable username: String): ResponseEntity<List<Order>> {
         val orders = orderService.findOrdersByUserUsername(username)
         return ResponseEntity(orders, HttpStatus.OK)
     }
 
+    @GetMapping("/id/{orderId}", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun findOrderById(@PathVariable orderId: String): ResponseEntity<Order> {
+        val order = orderService.findOrderByOrderId(orderId)
+        if (order.isPresent) {
+            return ResponseEntity(order.get(), HttpStatus.OK)
+        }
+        return ResponseEntity(HttpStatus.NOT_FOUND)
+    }
+
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun saveOrder(@RequestBody order: Order): ResponseEntity<Any> {
-        return when (orderService.findOrderByOrderId(order.orderId).isPresent) {
+    fun saveOrder(@RequestBody orderRequest: OrderRequest): ResponseEntity<Any> {
+        return when (orderService.findOrderByOrderId(orderRequest.orderId).isPresent) {
             false -> {
-                orderService.saveOrder(order)
+                val user=userService.findUserByUsername(orderRequest.username)
+                val books= mutableListOf<OrderItem>()
+                val order=Order(orderId = orderRequest.orderId,user = user.get(),orderItems = books,dateCreated = Date(),total =orderRequest.items.sumByDouble {
+
+                } )
+                val orderItems=orderRequest.items.map {
+                    OrderItem(
+                            itemId = -1,
+                            book = bookService.findBookByBookId(it.bookId).get(),
+                            quantity = it.quantity,
+                            order = null
+                            )
+                    bookService.findBookByBookId(it.bookId)
+                }
+                orderService.saveOrder()
                 ResponseEntity(HttpStatus.OK)
             }
             else -> ResponseEntity(HttpStatus.FOUND)
         }
     }
 
-    @PutMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun updateOrder(@RequestBody order: Order): ResponseEntity<Any> {
-        return when (orderService.findOrderByOrderId(order.orderId).isPresent) {
-            true -> {
-                orderService.saveOrder(order)
-                ResponseEntity(HttpStatus.OK)
-            }
-            else -> ResponseEntity(HttpStatus.NO_CONTENT)
-        }
-    }
-
-    @DeleteMapping("/{orderId}", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun deleteOrder(@PathVariable orderId: String): ResponseEntity<Any> {
-        return when (orderService.findOrderByOrderId(orderId).isPresent) {
-            true -> {
-                orderService.deleteOrderByOrderId(orderId)
-                ResponseEntity(HttpStatus.OK)
-            }
-            else -> ResponseEntity(HttpStatus.NO_CONTENT)
-        }
-    }
 
 }
