@@ -22,7 +22,7 @@ class OrderItemRestController(@Autowired val orderItemService: OrderItemService)
 
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun saveBasketEntry(@RequestBody orderItem: OrderItem): ResponseEntity<Any> {
-        return when (orderItemService.findOrderItemByOrderItemId(orderItem.entryId).isPresent) {
+        return when (orderItemService.findOrderItemByOrderItemId(orderItem.itemId).isPresent) {
             false -> {
                 orderItemService.saveOrderItem(orderItem)
                 ResponseEntity(HttpStatus.OK)
@@ -33,7 +33,7 @@ class OrderItemRestController(@Autowired val orderItemService: OrderItemService)
 
     @PutMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun updateBasketEntry(@RequestBody orderItem: OrderItem): ResponseEntity<Any> {
-        return when (orderItemService.findOrderItemByOrderItemId(orderItem.entryId).isPresent) {
+        return when (orderItemService.findOrderItemByOrderItemId(orderItem.itemId).isPresent) {
             true -> {
                 orderItemService.saveOrderItem(orderItem)
                 ResponseEntity(HttpStatus.OK)
