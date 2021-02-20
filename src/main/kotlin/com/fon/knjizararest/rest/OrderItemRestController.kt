@@ -1,7 +1,7 @@
 package com.fon.knjizararest.rest
 
-import com.fon.knjizararest.entity.BasketEntry
-import com.fon.knjizararest.service.BasketEntryService
+import com.fon.knjizararest.entity.OrderItem
+import com.fon.knjizararest.service.OrderItemService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -12,19 +12,19 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/api/v0/basketEntries")
-class BasketEntryRestController(@Autowired val basketEntryService: BasketEntryService) {
+@RequestMapping("/api/v0/orderItems")
+class OrderItemRestController(@Autowired val orderItemService: OrderItemService) {
 
     @GetMapping("/{basketId}/{page}/{size}/{sort}/{active}", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun findBasketEntriesByBasketBasketId(@PathVariable basketId: Long, @PathVariable page: Int, @PathVariable size: Int, @PathVariable sort: String, @PathVariable active: Boolean): ResponseEntity<Page<BasketEntry>> {
-        return ResponseEntity(basketEntryService.findBasketEntriesByBasketBasketIdAndActiveEquals(basketId, active, PageRequest.of(page, size, Sort.by(sort))), HttpStatus.OK)
+    fun findOrderItemsByOrderId(@PathVariable basketId: Long, @PathVariable page: Int, @PathVariable size: Int, @PathVariable sort: String, @PathVariable active: Boolean): ResponseEntity<Page<OrderItem>> {
+        return ResponseEntity(orderItemService.findOrderItemsByOrderId(basketId, PageRequest.of(page, size, Sort.by(sort))), HttpStatus.OK)
     }
 
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun saveBasketEntry(@RequestBody basketEntry: BasketEntry): ResponseEntity<Any> {
-        return when (basketEntryService.findBasketEntryByEntryId(basketEntry.entryId).isPresent) {
+    fun saveBasketEntry(@RequestBody orderItem: OrderItem): ResponseEntity<Any> {
+        return when (orderItemService.findOrderItemByOrderItemId(orderItem.entryId).isPresent) {
             false -> {
-                basketEntryService.saveBasketEntry(basketEntry)
+                orderItemService.saveOrderItem(orderItem)
                 ResponseEntity(HttpStatus.OK)
             }
             else -> ResponseEntity(HttpStatus.FOUND)
@@ -32,10 +32,10 @@ class BasketEntryRestController(@Autowired val basketEntryService: BasketEntrySe
     }
 
     @PutMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun updateBasketEntry(@RequestBody basketEntry: BasketEntry): ResponseEntity<Any> {
-        return when (basketEntryService.findBasketEntryByEntryId(basketEntry.entryId).isPresent) {
+    fun updateBasketEntry(@RequestBody orderItem: OrderItem): ResponseEntity<Any> {
+        return when (orderItemService.findOrderItemByOrderItemId(orderItem.entryId).isPresent) {
             true -> {
-                basketEntryService.saveBasketEntry(basketEntry)
+                orderItemService.saveOrderItem(orderItem)
                 ResponseEntity(HttpStatus.OK)
             }
             else -> ResponseEntity(HttpStatus.NO_CONTENT)
@@ -44,9 +44,9 @@ class BasketEntryRestController(@Autowired val basketEntryService: BasketEntrySe
 
     @DeleteMapping("/{entryId}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun deleteBasketEntry(@PathVariable entryId: Long): ResponseEntity<Any> {
-        return when (basketEntryService.findBasketEntryByEntryId(entryId).isPresent) {
+        return when (orderItemService.findOrderItemByOrderItemId(entryId).isPresent) {
             true -> {
-                basketEntryService.deleteBasketEntryByEntryId(entryId)
+                orderItemService.deleteOrderItemByOrderEntryId(entryId)
                 ResponseEntity(HttpStatus.OK)
             }
             else -> ResponseEntity(HttpStatus.NO_CONTENT)
