@@ -9,7 +9,7 @@ import java.util.*
 
 @Service
 class OrderServiceImpl(@Autowired val orderRepository: OrderRepository) : OrderService {
-    override fun findOrderByOrderId(orderId: Long): Optional<Order> {
+    override fun findOrderByOrderId(orderId: String): Optional<Order> {
         return orderRepository.findById(orderId)
     }
 
@@ -21,8 +21,8 @@ class OrderServiceImpl(@Autowired val orderRepository: OrderRepository) : OrderS
         return orderRepository.findOrdersByUsername(username)
     }
 
-    override fun deleteOrderByOrderId(basketId: Long) {
-        orderRepository.deleteById(basketId)
+    override fun deleteOrderByOrderId(orderId: String) {
+        orderRepository.deleteById(orderId)
     }
 
 }

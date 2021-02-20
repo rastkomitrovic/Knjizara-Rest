@@ -41,7 +41,7 @@ class OrderRestController(@Autowired val orderService: OrderService) {
     }
 
     @DeleteMapping("/{orderId}", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun deleteOrder(@PathVariable orderId: Long): ResponseEntity<Any> {
+    fun deleteOrder(@PathVariable orderId: String): ResponseEntity<Any> {
         return when (orderService.findOrderByOrderId(orderId).isPresent) {
             true -> {
                 orderService.deleteOrderByOrderId(orderId)
