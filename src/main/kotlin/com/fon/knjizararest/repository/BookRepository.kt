@@ -1,8 +1,6 @@
 package com.fon.knjizararest.repository
 
-import com.fon.knjizararest.entity.Author
 import com.fon.knjizararest.entity.Book
-import com.fon.knjizararest.entity.Comment
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.Query
