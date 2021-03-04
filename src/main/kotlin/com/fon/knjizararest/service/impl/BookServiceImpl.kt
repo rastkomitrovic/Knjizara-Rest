@@ -1,8 +1,13 @@
 package com.fon.knjizararest.service.impl
 
+import com.fon.knjizararest.dto.BookRequest
 import com.fon.knjizararest.entity.Author
 import com.fon.knjizararest.entity.Book
+import com.fon.knjizararest.entity.BookImage
+import com.fon.knjizararest.repository.AuthorRepository
 import com.fon.knjizararest.repository.BookRepository
+import com.fon.knjizararest.repository.GenreRepository
+import com.fon.knjizararest.repository.PublisherRepository
 import com.fon.knjizararest.service.BookService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
@@ -11,7 +16,12 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class BookServiceImpl(@Autowired val bookRepository: BookRepository) : BookService {
+class BookServiceImpl @Autowired constructor(
+        private val bookRepository: BookRepository,
+        private val genreRepository: GenreRepository,
+        private val authorRepository: AuthorRepository,
+        private val publisherRepository: PublisherRepository
+) : BookService {
     override fun findAllBooks(): List<Book> {
         return bookRepository.findAll().toList()
     }
@@ -20,7 +30,12 @@ class BookServiceImpl(@Autowired val bookRepository: BookRepository) : BookServi
         return bookRepository.findById(bookId)
     }
 
-    override fun saveBook(book: Book) {
+    override fun saveBook(bookRequest: BookRequest) {
+        val book=mapToBook(bookRequest)
+        bookRepository.save(book)
+    }
+
+    override fun updateBook(book: Book) {
         bookRepository.save(book)
     }
 
@@ -54,5 +69,33 @@ class BookServiceImpl(@Autowired val bookRepository: BookRepository) : BookServi
 
     override fun findBooksByGenre(genreId: Long, pageable: Pageable): Page<Book> {
         return bookRepository.findBooksByGenre(genreId, pageable)
+    }
+
+    private fun mapToBook(bookRequest: BookRequest):Book{
+        val book= Book(
+                bookId = 0,
+                ISBN = bookRequest.ISBN,
+                bookName = bookRequest.bookName,
+                description = bookRequest.description,
+                price = bookRequest.price,
+                stock = bookRequest.stock,
+                numberOfSoldCopies = 0,
+                language = bookRequest.language,
+                images = bookRequest.images?.map {
+                    BookImage(
+                            imageId = 0,
+                            imageEncoding = "",
+                            imageUrl = it,
+                            book = null
+                    )
+                }.orEmpty(),
+                genres = bookRequest.genres.map { genreRepository.findById(it).get() },
+                authors = bookRequest.authors.map { authorRepository.findById(it).get() },
+                comments = emptyList(),
+                rating = 0F,
+                publisher = publisherRepository.findById(bookRequest.publisher).get()
+        )
+        book.images.forEach { it.book=book }
+        return book
     }
 }

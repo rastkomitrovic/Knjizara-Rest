@@ -21,15 +21,6 @@ import kotlin.Comparator
 @RequestMapping("/api/v0/books")
 class BookRestController(@Autowired val bookService: BookService) {
 
-    @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun getAllBooks(): ResponseEntity<List<Book>> {
-        val books = bookService.findAllBooks()
-        return when (books.isNotEmpty()) {
-            true -> ResponseEntity(books, HttpStatus.OK)
-            else -> ResponseEntity(HttpStatus.NO_CONTENT)
-        }
-    }
-
     @GetMapping("/top12", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun getBestReviewBooks(): ResponseEntity<List<Book>> {
         val books = bookService.findAllBooks()
@@ -104,10 +95,10 @@ class BookRestController(@Autowired val bookService: BookService) {
     }
 
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun saveBook(@RequestBody book: BookRequest): ResponseEntity<Any> {
-        return when ( bookService.existsBookISBN(book.ISBN)) {
+    fun saveBook(@RequestBody bookRequest: BookRequest): ResponseEntity<Any> {
+        return when ( bookService.existsBookISBN(bookRequest.ISBN)) {
             false -> {
-                //bookService.saveBook(book)
+                bookService.saveBook(bookRequest)
                 ResponseEntity(HttpStatus.OK)
             }
             else -> ResponseEntity(HttpStatus.FOUND)
@@ -118,7 +109,7 @@ class BookRestController(@Autowired val bookService: BookService) {
     fun updateBook(@RequestBody book: Book): ResponseEntity<Any> {
         return when (bookService.findBookByBookId(book.bookId).isPresent) {
             true -> {
-                bookService.saveBook(book)
+                bookService.updateBook(book)
                 ResponseEntity(HttpStatus.OK)
             }
             else -> ResponseEntity(HttpStatus.NO_CONTENT)

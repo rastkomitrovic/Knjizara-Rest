@@ -7,6 +7,7 @@ import com.fon.knjizararest.service.BookService
 import com.fon.knjizararest.service.OrderService
 import com.fon.knjizararest.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
@@ -25,9 +26,8 @@ class OrderRestController @Autowired constructor(
 ) {
 
     @GetMapping("/{username}/{page}/{size}/{sort}", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun findOrderByUsername(@PathVariable username: String, @PathVariable page: Int, @PathVariable size: Int, @PathVariable sort: String): ResponseEntity<List<Order>> {
-        val orders = orderService.findOrdersByUserUsername(username, PageRequest.of(page, size, Sort.by(sort)))
-        return ResponseEntity(orders, HttpStatus.OK)
+    fun findOrderByUsername(@PathVariable username: String, @PathVariable page: Int, @PathVariable size: Int, @PathVariable sort: String): ResponseEntity<Page<Order>> {
+        return ResponseEntity(orderService.findOrdersByUserUsername(username, PageRequest.of(page, size, Sort.by(sort))), HttpStatus.OK)
     }
 
     @GetMapping("/{orderId}", produces = [MediaType.APPLICATION_JSON_VALUE])

@@ -47,7 +47,7 @@ class OrderServiceImpl @Autowired constructor(
     }
 
     private fun checkIfOrderExists(orderRequest: OrderRequest){
-        if(orderRepository.findOrderByPayPalOrderId(orderRequest.orderId).isEmpty)
+        if(orderRepository.findOrderByPayPalOrderId(orderRequest.orderId).isPresent)
             throw Exception("The specified pay pall order id:${orderRequest.orderId} already exists")
     }
 
