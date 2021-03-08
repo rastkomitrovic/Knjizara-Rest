@@ -17,5 +17,5 @@ data class Author(
                 name = "book_author",
                 joinColumns = [JoinColumn(name = "author_id", nullable = false)],
                 inverseJoinColumns = [JoinColumn(name = "book_id", nullable = false)]
-        ) @JsonBackReference val books: List<Book>
+        ) @JsonBackReference var books: List<Book>
 )

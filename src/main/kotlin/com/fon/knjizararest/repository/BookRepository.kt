@@ -24,7 +24,7 @@ interface BookRepository : PagingAndSortingRepository<Book, Long> {
     fun findBooksByGenre(genreId: Long, pageable: Pageable): Page<Book>
 
     @Query("select b from Book as b where b.ISBN=:ISBN")
-    fun existsBookISBN(ISBN: String): Optional<Book>
+    fun existsBookISBN(@Param("ISBN")ISBN: String): Optional<Book>
 
     @Query("select b from Book as b where b.bookName like CONCAT('%',:search ,'%') or exists (select a from b.authors as a where a.firstName like CONCAT('%',:search ,'%') or a.middleName like CONCAT('%',:search ,'%') or a.lastName like CONCAT('%',:search ,'%'))")
     fun findBooksSearchSuggest(search: String, pageable: Pageable): List<Book>

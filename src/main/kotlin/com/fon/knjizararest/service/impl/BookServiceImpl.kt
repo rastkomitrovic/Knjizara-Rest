@@ -96,6 +96,8 @@ class BookServiceImpl @Autowired constructor(
                 publisher = publisherRepository.findById(bookRequest.publisher).get()
         )
         book.images.forEach { it.book=book }
+        book.genres.forEach { it.books = listOf(book) }
+        book.authors.forEach { it.books = listOf(book) }
         return book
     }
 }
