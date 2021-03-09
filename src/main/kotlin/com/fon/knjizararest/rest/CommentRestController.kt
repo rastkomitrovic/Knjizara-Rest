@@ -19,13 +19,11 @@ class CommentRestController @Autowired constructor(
         val bookService: BookService
 ) {
 
+    @CrossOrigin(origins = arrayOf("http://localhost:9099"))
     @GetMapping("/{bookId}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findCommentsByBookId(@PathVariable bookId: Long): ResponseEntity<List<Comment>> {
         val comments = commentService.findCommentsByBookBookId(bookId)
-        return when (comments.isNotEmpty()) {
-            true -> ResponseEntity(comments, HttpStatus.OK)
-            else -> ResponseEntity(HttpStatus.NO_CONTENT)
-        }
+        return ResponseEntity(comments, HttpStatus.OK)
     }
 
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
