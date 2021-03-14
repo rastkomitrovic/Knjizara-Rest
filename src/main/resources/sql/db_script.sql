@@ -73,7 +73,7 @@ CREATE TABLE `book` (
                         PRIMARY KEY (`book_id`),
                         KEY `fk_book_publisher` (`publisher_id`),
                         CONSTRAINT `fk_book_publisher` FOREIGN KEY (`publisher_id`) REFERENCES `publisher` (`publisher_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `book` */
 
@@ -101,7 +101,6 @@ insert  into `book`(`book_id`,`ISBN`,`book_name`,`description`,`price`,`stock`,`
 (21,'141344311','Hari Poter i relikvije smrti',NULL,900,60,'Srpski',30,6.4,5),
 (23,'14132413241234','Romeo i Julija',NULL,400,255,'Srpski',150,8.5,7),
 (24,'12414114','Hamlet',NULL,500,143,'Srpski',100,6.7,8),
-(25,'2431314341134','Evgenije Onjegin',NULL,1300,125,'Srpski',65,7.6,1),
 (26,'213414241231324','Alhemicar',NULL,500,234,'Srpski',78,8.6,2),
 (27,'212134142312','Gospodar prstenova: druzina prstena',NULL,700,35,'Srpski',10,7.8,3),
 (28,'13123213213123','Gospodar prstenova: povratak kralja',NULL,800,45,'Srpski',20,7.5,4),
@@ -154,7 +153,6 @@ insert  into `book_author`(`book_id`,`author_id`) values
 (21,5),
 (23,3),
 (24,3),
-(25,7),
 (26,9),
 (27,10),
 (28,10),
@@ -195,7 +193,6 @@ insert  into `book_genre`(`genre_id`,`book_id`) values
 (1,9),
 (1,10),
 (1,11),
-(2,25),
 (11,15),
 (11,16),
 (11,17),
@@ -225,7 +222,6 @@ insert  into `book_genre`(`genre_id`,`book_id`) values
 (31,14),
 (31,23),
 (31,24),
-(31,25),
 (31,30),
 (31,31),
 (31,32),
@@ -291,7 +287,6 @@ insert  into `bookimage`(`image_id`,`image_encoding`,`image_url`,`book_id`) valu
 (25,'','https://www.delfi.rs/_img/artikli/2019/02/hari_poter_i_relikvije_smrti_vv.jpg',21),
 (27,'','https://www.delfi.rs/_img/artikli/2019/12/romeo_i_julija_vv.jpg',23),
 (28,'','https://www.delfi.rs/_img/artikli/knjige/44/vv/delfi_hamlet_vilijem_sekspir.jpg',24),
-(29,'','https://www.delfi.rs/_img/artikli/2017/01/evgenije_onjegin_vv.jpg',25),
 (30,'','https://www.delfi.rs/_img/artikli/2013/12/alhemicar_vv.jpg',26),
 (31,'','https://www.delfi.rs/_img/artikli/2019/12/gospodar_prstenova_-_druzina_prstena_tvrd_povez_vv.jpg',27),
 (32,'','https://www.delfi.rs/_img/artikli/2019/12/gospodar_prstenova_-_povratak_kralja_tvrd_povez_vv.jpg',28),
@@ -303,8 +298,7 @@ insert  into `bookimage`(`image_id`,`image_encoding`,`image_url`,`book_id`) valu
 (40,'','https://www.delfi.rs/_img/artikli/2018/10/seobe_vv.jpg',34),
 (41,'','https://www.delfi.rs/_img/artikli/2020/11/psalm_44_vv.jpg',35),
 (42,'','https://www.delfi.rs/_img/artikli/2014/10/dervis_i_smrt_vv.jpg',36),
-(43,'','https://www.delfi.rs/_img/artikli/2014/10/tvrdjava_vv.jpg',37),
-(45,'','https://www.delfi.rs/_img/artikli/2019/12/gospodar_prstenova_-_druzina_prstena_tvrd_povez_vv.jpg',37);
+(43,'','https://www.delfi.rs/_img/artikli/2014/10/tvrdjava_vv.jpg',37);
 
 /*Table structure for table `city` */
 
@@ -343,12 +337,12 @@ CREATE TABLE `comment` (
                            KEY `fk_comment_book` (`book_id`),
                            CONSTRAINT `fk_comment_book` FOREIGN KEY (`book_id`) REFERENCES `book` (`book_id`) ON DELETE CASCADE,
                            CONSTRAINT `fk_comment_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `comment` */
 
 insert  into `comment`(`comment_id`,`text`,`rating`,`user_id`,`book_id`) values
-(31,'komentar',1,2,1);
+(34,'asdfsdsad',1,3,1);
 
 /*Table structure for table `country` */
 
@@ -407,21 +401,6 @@ insert  into `genre`(`genre_id`,`genre_name`,`description`) values
 (33,'Roman',NULL),
 (34,'Domaci pisci',NULL);
 
-/*Table structure for table `order` */
-
-DROP TABLE IF EXISTS `order`;
-
-CREATE TABLE `order` (
-                         `order_id` bigint(20) NOT NULL AUTO_INCREMENT,
-                         `user_id` bigint(20) NOT NULL,
-                         `date_created` date NOT NULL,
-                         PRIMARY KEY (`order_id`),
-                         KEY `fk_order_user` (`user_id`),
-                         CONSTRAINT `fk_order_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-/*Data for the table `order` */
-
 /*Table structure for table `order_item` */
 
 DROP TABLE IF EXISTS `order_item`;
@@ -430,15 +409,60 @@ CREATE TABLE `order_item` (
                               `item_id` bigint(20) NOT NULL AUTO_INCREMENT,
                               `book_id` bigint(20) NOT NULL,
                               `quantity` bigint(20) NOT NULL,
-                              `order_id` bigint(20) NOT NULL,
+                              `order_id` bigint(100) NOT NULL,
                               PRIMARY KEY (`item_id`),
                               KEY `fk_orderItem_book` (`book_id`),
                               KEY `fk_orderItem_order` (`order_id`),
                               CONSTRAINT `fk_orderItem_book` FOREIGN KEY (`book_id`) REFERENCES `book` (`book_id`) ON DELETE CASCADE,
-                              CONSTRAINT `fk_orderItem_order` FOREIGN KEY (`order_id`) REFERENCES `order` (`order_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+                              CONSTRAINT `fk_orderItem_order` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `order_item` */
+
+insert  into `order_item`(`item_id`,`book_id`,`quantity`,`order_id`) values
+(24,13,2,17),
+(25,2,2,17),
+(26,3,3,1),
+(27,4,2,1),
+(28,5,2,1),
+(29,6,4,2),
+(30,7,5,2),
+(31,8,5,2),
+(32,10,2,3),
+(33,11,1,4),
+(34,12,4,4),
+(35,13,1,4),
+(36,14,1,4),
+(37,15,4,4),
+(38,16,2,4),
+(39,17,1,4),
+(40,18,2,5),
+(41,19,2,5);
+
+/*Table structure for table `orders` */
+
+DROP TABLE IF EXISTS `orders`;
+
+CREATE TABLE `orders` (
+                          `order_id` bigint(20) NOT NULL AUTO_INCREMENT,
+                          `pay_pal_order_id` varchar(100) NOT NULL,
+                          `user_id` bigint(20) NOT NULL,
+                          `date_created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE current_timestamp(),
+                          `total` double NOT NULL,
+                          PRIMARY KEY (`order_id`),
+                          KEY `fk_order_user` (`user_id`),
+                          CONSTRAINT `fk_order_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `orders` */
+
+insert  into `orders`(`order_id`,`pay_pal_order_id`,`user_id`,`date_created`,`total`) values
+(1,'345678905678i9',2,'1970-01-01 17:38:39',9890),
+(2,'1234567890',2,'1970-01-03 17:38:58',6789),
+(3,'1234567890',2,'2021-03-12 17:39:24',56789),
+(4,'234567890',2,'1969-12-29 17:40:36',3143243),
+(5,'123321312123',2,'1969-12-28 17:40:47',1343113),
+(17,'3T621181475865250',2,'2021-03-08 18:17:33',5600);
 
 /*Table structure for table `publisher` */
 
@@ -536,13 +560,14 @@ CREATE TABLE `user` (
                         UNIQUE KEY `UNIQUE_USERNAME` (`username`),
                         KEY `fk_user_city` (`city_id`),
                         CONSTRAINT `fk_user_city` FOREIGN KEY (`city_id`) REFERENCES `city` (`city_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `user` */
 
 insert  into `user`(`user_id`,`username`,`password`,`name`,`last_name`,`email`,`phone`,`address`,`city_id`,`date_of_birth`,`role`) values
-(2,'rastko','$2a$10$rogoCsNmKFVibfvnLHRbtOYQoyik0QwvWNnBx4.kf8AkY/uGM6zK.','Rastko','Mitrovic','rastkomitrovic@gmail.com','+381637413127','Lazarevacki drum 11',3,'1996-03-21','ADMIN'),
-(3,'ogi','$2a$10$potcZuL5dy04rPmLbzfej.vZDXBMkz1PTLaI/vhhMApaQ/KDAv9zO','Ognjen','Andjelic','ognjen@gmail.com','+3815322332','Neka adresa 1',3,'1996-10-21','USER');
+(2,'rastko','$2a$10$7HSyrguRiiQzOPYcTNmER.SHMGJZapP84W6tt1OwzJbHXxwQZgOoS','Rastko','Mitrovic','rastkomitrovic@gmail.com','+381637413127','Lazarevacki drum 11',3,'1996-03-21','ADMIN'),
+(3,'ogi','$2a$10$potcZuL5dy04rPmLbzfej.vZDXBMkz1PTLaI/vhhMApaQ/KDAv9zO','Ognjen','Andjelic','ognjen@gmail.com','+3815322332','Neka adresa 1',3,'1996-10-21','USER'),
+(4,'tea','$2a$10$Mw4.IIwH4ycS14GZqTlUtewYG/6X4L5QyCu2hD7Skal0KiRUzPMty','Teodora','Teodora','teodora@teodora.com','+381637413127','Lazarevacki Drum',3,'1996-02-09','USER');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
