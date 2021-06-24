@@ -56,8 +56,10 @@ class AuthorRestController(@Autowired val authorService: AuthorService) {
 
     @PutMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun updateAuthor(@RequestBody author: Author): ResponseEntity<Any> {
-        return when (authorService.findAuthorByAuthorId(author.authorId).isPresent) {
+        val authorFromDb = authorService.findAuthorByAuthorId(author.authorId)
+        return when (authorFromDb.isPresent) {
             true -> {
+                author.books = authorFromDb.get().books
                 authorService.saveAuthor(author)
                 ResponseEntity(HttpStatus.OK)
             }

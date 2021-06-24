@@ -4,10 +4,7 @@ import com.fon.knjizararest.dto.BookRequest
 import com.fon.knjizararest.entity.Author
 import com.fon.knjizararest.entity.Book
 import com.fon.knjizararest.entity.BookImage
-import com.fon.knjizararest.repository.AuthorRepository
-import com.fon.knjizararest.repository.BookRepository
-import com.fon.knjizararest.repository.GenreRepository
-import com.fon.knjizararest.repository.PublisherRepository
+import com.fon.knjizararest.repository.*
 import com.fon.knjizararest.service.BookService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
@@ -20,7 +17,8 @@ class BookServiceImpl @Autowired constructor(
         private val bookRepository: BookRepository,
         private val genreRepository: GenreRepository,
         private val authorRepository: AuthorRepository,
-        private val publisherRepository: PublisherRepository
+        private val publisherRepository: PublisherRepository,
+        private val bookImageRepository: BookImageRepository
 ) : BookService {
     override fun findAllBooks(): List<Book> {
         return bookRepository.findAll().toList()
@@ -33,6 +31,7 @@ class BookServiceImpl @Autowired constructor(
     override fun saveBook(bookRequest: BookRequest) {
         val book=mapToBook(bookRequest)
         bookRepository.save(book)
+        book.images.forEach { bookImageRepository.save(it) }
     }
 
     override fun updateBook(book: Book) {
@@ -96,8 +95,8 @@ class BookServiceImpl @Autowired constructor(
                 publisher = publisherRepository.findById(bookRequest.publisher).get()
         )
         book.images.forEach { it.book=book }
-        book.genres.forEach { it.books = listOf(book) }
-        book.authors.forEach { it.books = listOf(book) }
+        book.genres.forEach { it.books = it.books.plus(book) }
+        book.authors.forEach { it.books = it.books.plus(book) }
         return book
     }
 }

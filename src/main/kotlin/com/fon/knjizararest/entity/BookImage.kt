@@ -7,7 +7,7 @@ import javax.persistence.*
 @Table(name = "bookimage")
 data class BookImage(
         @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "image_id", nullable = false) val imageId: Long,
-        @Column(name = "image_encoding", nullable = false) val imageEncoding: String,
-        @Column(name = "image_url", nullable = true) val imageUrl: String? = "",
+        @Column(name = "image_encoding", nullable = true) val imageEncoding: String,
+        @Column(name = "image_url", nullable = false) val imageUrl: String? = "",
         @ManyToOne @JoinColumn(name = "book_id", nullable = false) @JsonBackReference var book: Book?
 )
