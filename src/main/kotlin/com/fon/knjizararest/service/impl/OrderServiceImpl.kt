@@ -21,9 +21,6 @@ class OrderServiceImpl @Autowired constructor(
          private val userRepository: UserRepository,
          private val bookRepository: BookRepository
 ) : OrderService {
-    override fun findOrderByOrderId(orderId: Long): Optional<Order> {
-        return orderRepository.findById(orderId)
-    }
 
     override fun saveOrder(orderRequest: OrderRequest) {
         checkIfOrderExists(orderRequest)

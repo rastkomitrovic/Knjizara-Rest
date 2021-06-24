@@ -1,7 +1,6 @@
 package com.fon.knjizararest.service.impl
 
 import com.fon.knjizararest.dto.BookRequest
-import com.fon.knjizararest.entity.Author
 import com.fon.knjizararest.entity.Book
 import com.fon.knjizararest.entity.BookImage
 import com.fon.knjizararest.repository.*
@@ -32,10 +31,6 @@ class BookServiceImpl @Autowired constructor(
         val book=mapToBook(bookRequest)
         bookRepository.save(book)
         book.images.forEach { bookImageRepository.save(it) }
-    }
-
-    override fun updateBook(book: Book) {
-        bookRepository.save(book)
     }
 
     override fun findBooks(pageable: Pageable): Page<Book> {

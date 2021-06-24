@@ -13,10 +13,6 @@ class UserServiceImpl(@Autowired val userRepository: UserRepository) : UserServi
         return userRepository.findUserByUsername(username)
     }
 
-    override fun deleteUserByUsername(username: String) {
-        return userRepository.deleteUserByUsername(username);
-    }
-
     override fun saveUser(user: User) {
         userRepository.save(user)
     }

@@ -8,5 +8,4 @@ import java.util.*
 @Repository
 interface UserRepository : CrudRepository<User, Long> {
     fun findUserByUsername(username: String): Optional<User>
-    fun deleteUserByUsername(username: String)
 }

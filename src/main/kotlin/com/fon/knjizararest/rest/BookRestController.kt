@@ -1,10 +1,8 @@
 package com.fon.knjizararest.rest
 
 import com.fon.knjizararest.dto.BookRequest
-import com.fon.knjizararest.entity.Author
 import com.fon.knjizararest.entity.Book
 import com.fon.knjizararest.service.BookService
-import org.apache.coyote.Response
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -13,8 +11,6 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.util.*
-import javax.swing.SortOrder
 import kotlin.Comparator
 
 @RestController
@@ -102,17 +98,6 @@ class BookRestController(@Autowired val bookService: BookService) {
                 ResponseEntity(HttpStatus.OK)
             }
             else -> ResponseEntity(HttpStatus.FOUND)
-        }
-    }
-
-    @PutMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun updateBook(@RequestBody book: Book): ResponseEntity<Any> {
-        return when (bookService.findBookByBookId(book.bookId).isPresent) {
-            true -> {
-                bookService.updateBook(book)
-                ResponseEntity(HttpStatus.OK)
-            }
-            else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
     }
 

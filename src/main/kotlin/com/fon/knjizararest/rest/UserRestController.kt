@@ -26,17 +26,6 @@ class UserRestController(@Autowired val userService: UserService) {
         return ResponseEntity(userService.findUserByUsername(username).isPresent,HttpStatus.OK)
     }
 
-    @DeleteMapping("/{username}", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun deleteUserByUsername(@PathVariable username: String): ResponseEntity<Any> {
-        return when (userService.findUserByUsername(username).isPresent) {
-            true -> {
-                userService.deleteUserByUsername(username)
-                ResponseEntity(HttpStatus.OK)
-            }
-            else -> ResponseEntity(HttpStatus.NO_CONTENT)
-        }
-    }
-
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun saveUser(@RequestBody user: User): ResponseEntity<Any> {
         return when (userService.findUserByUsername(user.username).isPresent || userService.findUserByUserId(user.userId).isPresent) {

@@ -22,57 +22,12 @@ class CityRestController(@Autowired val cityService: CityService) {
     }
 
     @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun findCitiesByCityNameContaining(
-            @RequestParam(name = "param", defaultValue = "") param: String
-    ): ResponseEntity<List<City>> {
-        return when (param) {
-            "" -> {
-                val cities = cityService.findAllByCityIdNotNull()
-                if (cities.isNotEmpty())
-                    ResponseEntity(cities, HttpStatus.OK)
-                else
-                    ResponseEntity(HttpStatus.NO_CONTENT)
-            }
-            else -> {
-                val cities = cityService.findCitiesByCityNameContaining(param)
-                if (cities.isNotEmpty())
-                    ResponseEntity(cities, HttpStatus.OK)
-                else
-                    ResponseEntity(cities, HttpStatus.NO_CONTENT)
-            }
-        }
-    }
+    fun findAllCities(): ResponseEntity<List<City>> {
+        val cities = cityService.findAllCities()
+        return if (cities.isNotEmpty())
+            ResponseEntity(cities, HttpStatus.OK)
+        else
+            ResponseEntity(HttpStatus.NO_CONTENT)
 
-    @DeleteMapping("/{cityId}", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun deleteCityByCityId(@PathVariable cityId: Long): ResponseEntity<Any> {
-        return when (cityService.findCityByCityId(cityId).isPresent) {
-            true -> {
-                cityService.deleteCityByCityId(cityId)
-                ResponseEntity(HttpStatus.OK)
-            }
-            else -> ResponseEntity(HttpStatus.NO_CONTENT)
-        }
-    }
-
-    @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun saveCity(@RequestBody city: City): ResponseEntity<Any> {
-        return when (cityService.existsCtyByCityNameOrPostalCode(city.cityName, city.postalCode) || cityService.findCityByCityId(city.cityId).isPresent) {
-            false -> {
-                cityService.saveCity(city)
-                ResponseEntity(HttpStatus.OK)
-            }
-            else -> ResponseEntity(HttpStatus.FOUND)
-        }
-    }
-
-    @PutMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun updateCity(@RequestBody city: City): ResponseEntity<Any> {
-        return when (cityService.findCityByCityId(city.cityId).isPresent) {
-            true -> {
-                cityService.saveCity(city)
-                ResponseEntity(HttpStatus.OK)
-            }
-            else -> ResponseEntity(HttpStatus.NO_CONTENT)
-        }
     }
 }

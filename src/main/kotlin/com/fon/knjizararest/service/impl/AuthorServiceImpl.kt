@@ -24,14 +24,6 @@ class AuthorServiceImpl(@Autowired val authorRepository: AuthorRepository) : Aut
         return authorRepository.findById(authorId)
     }
 
-    override fun findAuthorsByBooks(book: Book): List<Author> {
-        return authorRepository.findAuthorsByBooks(book)
-    }
-
-    override fun searchAuthors(param: String, pageable: Pageable): Page<Author> {
-        return authorRepository.findAuthorsByFirstNameContainingOrMiddleNameContainingOrLastNameContainingOrDescriptionContaining(param, param, param, param, pageable)
-    }
-
     override fun existsAuthorByFirstNameAndLastNameAndDateOfBirth(firstName: String, lastName: String, dateOfBirth: Date): Boolean {
         return authorRepository.existsAuthorByFirstNameAndLastNameAndDateOfBirth(firstName, lastName, dateOfBirth)
     }

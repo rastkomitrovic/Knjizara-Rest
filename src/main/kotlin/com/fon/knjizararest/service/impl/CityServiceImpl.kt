@@ -13,25 +13,8 @@ class CityServiceImpl(@Autowired val cityRepository: CityRepository) : CityServi
         return cityRepository.findById(cityId)
     }
 
-    override fun findCitiesByCityNameContaining(param: String): List<City> {
-        return cityRepository.findCitiesByCityNameContaining(param)
-    }
-
-    override fun findAllByCityIdNotNull(): List<City> {
+    override fun findAllCities(): List<City> {
         return cityRepository.findAll().toList()
     }
-
-    override fun deleteCityByCityId(cityId: Long) {
-        cityRepository.deleteById(cityId)
-    }
-
-    override fun saveCity(city: City) {
-        cityRepository.save(city)
-    }
-
-    override fun existsCtyByCityNameOrPostalCode(cityName: String, postalCode: String): Boolean {
-        return cityRepository.existsCtyByCityNameOrPostalCode(cityName, postalCode);
-    }
-
 
 }

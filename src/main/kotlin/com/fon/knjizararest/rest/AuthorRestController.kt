@@ -3,9 +3,6 @@ package com.fon.knjizararest.rest
 import com.fon.knjizararest.entity.Author
 import com.fon.knjizararest.service.AuthorService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -31,16 +28,6 @@ class AuthorRestController(@Autowired val authorService: AuthorService) {
             true -> ResponseEntity(author.get(),HttpStatus.OK)
             else -> ResponseEntity(HttpStatus.NO_CONTENT)
         }
-    }
-
-    @GetMapping("/{page}/{size}/{sort}", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun findAllAuthors(@PathVariable page: Int, @PathVariable size: Int, @PathVariable sort: String): ResponseEntity<Page<Author>> {
-        return ResponseEntity(authorService.findAllAuthors(PageRequest.of(page, size, Sort.by(sort))), HttpStatus.OK)
-    }
-
-    @GetMapping("/{page}/{size}/{sort}/{param}", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun findAllAuthorsSearch(@PathVariable page: Int, @PathVariable size: Int, @PathVariable sort: String, @PathVariable param: String): ResponseEntity<Page<Author>> {
-        return ResponseEntity(authorService.searchAuthors(param, PageRequest.of(page, size, Sort.by(sort))), HttpStatus.OK)
     }
 
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
