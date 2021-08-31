@@ -65,7 +65,7 @@ class BookRestController(@Autowired val bookService: BookService) {
 
     @GetMapping("/authorSearch/{authorId}/{page}/{size}/{sort}",  produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findBooksByAuthor(@PathVariable authorId: Long, @PathVariable page: Int, @PathVariable size: Int, @PathVariable sort: String): ResponseEntity<Page<Book>> {
-        return ResponseEntity(bookService.findBooksByAuthors(authorId, PageRequest.of(page, size, Sort.by(sort))), HttpStatus.OK)
+        return ResponseEntity(bookService.findBooksByAuthor(authorId, PageRequest.of(page, size, Sort.by(sort))), HttpStatus.OK)
     }
 
     @CrossOrigin(origins = arrayOf("http://localhost:9099"))
@@ -101,14 +101,4 @@ class BookRestController(@Autowired val bookService: BookService) {
         }
     }
 
-    @DeleteMapping("/{bookId}", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun deleteBook(@PathVariable bookId: Long): ResponseEntity<Any> {
-        return when (bookService.findBookByBookId(bookId).isPresent) {
-            true -> {
-                bookService.deleteBookByBookId(bookId)
-                ResponseEntity(HttpStatus.OK)
-            }
-            else -> ResponseEntity(HttpStatus.NO_CONTENT)
-        }
-    }
 }

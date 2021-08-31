@@ -11,5 +11,5 @@ interface CommentRepository :CrudRepository<Comment,Long>{
     fun findCommentsByBookBookId(bookId: Long): List<Comment>
 
     @Query("select c from Comment as c where c.user.username=:username and c.book.bookId=:bookId")
-    fun existsCommentByUser(username: String, bookId: Long): Optional<Comment>
+    fun existsCommentByUser(username: String, bookId: Long): Boolean
 }

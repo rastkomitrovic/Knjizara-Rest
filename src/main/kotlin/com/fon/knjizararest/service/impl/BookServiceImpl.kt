@@ -41,7 +41,7 @@ class BookServiceImpl @Autowired constructor(
         return bookRepository.findBooksSearch(param, pageable)
     }
 
-    override fun findBooksByAuthors(authorId: Long, pageable: Pageable): Page<Book> {
+    override fun findBooksByAuthor(authorId: Long, pageable: Pageable): Page<Book> {
         return bookRepository.findBooksByAuthors(authorId, pageable)
     }
 
@@ -51,10 +51,6 @@ class BookServiceImpl @Autowired constructor(
 
     override fun existsBookISBN(ISBN: String): Boolean {
         return bookRepository.existsBookISBN(ISBN).isPresent
-    }
-
-    override fun deleteBookByBookId(bookId: Long) {
-        bookRepository.deleteById(bookId)
     }
 
     override fun findBooksSearchSuggest(search: String, pageable: Pageable): List<Book> {

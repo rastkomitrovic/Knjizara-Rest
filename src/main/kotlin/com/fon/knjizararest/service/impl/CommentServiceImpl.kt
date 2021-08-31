@@ -27,6 +27,6 @@ class CommentServiceImpl(@Autowired val commentRepository: CommentRepository , @
     }
 
     override fun existsCommentByUser(username: String, bookId: Long): Boolean {
-        return commentRepository.existsCommentByUser(username, bookId).isPresent
+        return commentRepository.existsCommentByUser(username, bookId)
     }
 }

@@ -16,10 +16,6 @@ class AuthorServiceImpl(@Autowired val authorRepository: AuthorRepository) : Aut
         return authorRepository.findAll().sortedBy { it.firstName }.toList()
     }
 
-    override fun findAllAuthors(pageable: Pageable): Page<Author> {
-        return authorRepository.findAll(pageable)
-    }
-
     override fun findAuthorByAuthorId(authorId: Long): Optional<Author> {
         return authorRepository.findById(authorId)
     }
