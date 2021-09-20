@@ -10,7 +10,9 @@ import com.fon.knjizararest.repository.UserRepository
 import com.fon.knjizararest.service.OrderService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import java.lang.Exception
 import java.util.*
@@ -41,6 +43,10 @@ class OrderServiceImpl @Autowired constructor(
 
     override fun findOrdersByUserUsername(username: String, pageable: Pageable): Page<Order> {
         return orderRepository.findOrdersByUsername(username, pageable)
+    }
+
+    override fun findOrdersPaging(page: Int, size: Int, sort: String): Page<Order> {
+        return orderRepository.findAll(PageRequest.of(page,size, Sort.by(sort)))
     }
 
     private fun checkIfOrderExists(orderRequest: OrderRequest){

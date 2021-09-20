@@ -8,4 +8,5 @@ import org.springframework.data.domain.Pageable
 interface OrderService {
     fun saveOrder(orderRequest: OrderRequest) //default method
     fun findOrdersByUserUsername(username: String, pageable: Pageable): Page<Order>
+    fun findOrdersPaging(page: Int, size: Int, sort: String): Page<Order>
 }
