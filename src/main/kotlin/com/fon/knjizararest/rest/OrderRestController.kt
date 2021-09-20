@@ -41,7 +41,7 @@ class OrderRestController @Autowired constructor(
 
     @GetMapping("/{page}/{size}/{sort}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findOrdersPaging(@PathVariable page: Int, @PathVariable size: Int, @PathVariable sort: String):ResponseEntity<Page<Order>>{
-        return ResponseEntity(orderService.findOrdersPaging(page,size,sort))
+        return ResponseEntity(orderService.findOrdersPaging(page,size,sort), HttpStatus.OK)
     }
 
 
